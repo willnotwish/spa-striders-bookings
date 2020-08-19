@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  helper_method :current_user
+  helper_method :current_user, :user_logged_in?
 
   def index
     authenticate_user!
@@ -8,12 +8,14 @@ class HomeController < ApplicationController
   private
 
   def authenticate_user!
-    if session[:user_id].blank?
-      redirect_to :login
-    end
+    redirect_to :login if session[:user_id].blank?
   end
 
   def current_user
     @current_user ||= User.find_by!(members_user_id: session[:user_id])
+  end
+
+  def user_logged_in?
+    !current_user.nil?
   end
 end

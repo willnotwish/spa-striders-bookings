@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  aasm_state: 1
+  bookable_event: one
+  user: one
+
+two:
+  aasm_state: 1
+  bookable_event: two
+  user: two

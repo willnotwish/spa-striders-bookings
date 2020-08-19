@@ -1,8 +1,6 @@
 FactoryBot.define do
   factory :user do
-    email { "MyString" }
-    first_name { "MyString" }
-    last_name { "MyString" }
-    members_user_id { "" }
+    email { Faker::Internet.unique.email }
+    members_user_id { Faker::Number.unique.number(digits: 10) }
   end
 end

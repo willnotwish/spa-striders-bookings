@@ -1,0 +1,7 @@
+= link_to root_path do
+    h1 Spa Striders Session Bookings
+
+- if user_logged_in?
+  p You are logged in as #{current_user.email}. Not you? #{link_to 'Log out', nil}
+- else
+  p You need to log in to use this app.

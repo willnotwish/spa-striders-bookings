@@ -35,6 +35,8 @@ group :development, :test do
   # Testing
   gem 'rspec-rails'
   gem 'factory_bot_rails'
+
+  gem 'faker'
 end
 
 group :development do
@@ -53,6 +55,7 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 4.0'
+  gem 'rspec-collection_matchers'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -66,3 +69,9 @@ gem 'slim-rails'
 
 # Simple form for forms
 gem 'simple_form'
+
+# To DRY up controllers
+gem 'responders'
+
+# For event status
+gem 'aasm'

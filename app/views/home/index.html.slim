@@ -1,3 +1,11 @@
-h1 Bookings
+h1 Your bookings
 
-p You are logged in as #{current_user.email}
+- if @bookings.empty?
+  .notification.info You have no bookings yet.
+
+- else  
+  .bookings-list
+    - @bookings.each do |booking|
+      = render partial: 'booking', object: booking
+
+= link_to 'Make a booking', [:new, :booking]

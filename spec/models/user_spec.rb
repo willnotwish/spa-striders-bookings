@@ -9,6 +9,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to validate_uniqueness_of(:members_user_id) }
   it { is_expected.to have_many(:bookings) }
   it { is_expected.to have_many(:events).through(:bookings) }
+  it { is_expected.to have_one(:contact_number) }
 
   describe 'guest or member' do
     it { is_expected.not_to be_guest }
@@ -40,4 +41,10 @@ RSpec.describe User, type: :model do
       it { is_expected.to be_member }  
     end
   end
+
+  it 'has no phone number' do
+    expect(user.phone).to be_blank
+  end
+  
+  it { is_expected.to delegate_method(:phone).to(:contact_number).allow_nil }
 end

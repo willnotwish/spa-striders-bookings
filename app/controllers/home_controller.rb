@@ -1,21 +1,9 @@
 class HomeController < ApplicationController
-  helper_method :current_user, :user_logged_in?
-
+  respond_to :html
+  
   def index
-    authenticate_user!
-  end
+    @bookings = current_user.bookings.future.order(created_at: :asc)
 
-  private
-
-  def authenticate_user!
-    redirect_to :login if session[:user_id].blank?
-  end
-
-  def current_user
-    @current_user ||= User.find_by!(members_user_id: session[:user_id])
-  end
-
-  def user_logged_in?
-    !current_user.nil?
+    respond_with @bookings
   end
 end

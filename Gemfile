@@ -75,3 +75,6 @@ gem 'responders'
 
 # For event status
 gem 'aasm'
+
+# Reactive style UI
+gem 'view_component'

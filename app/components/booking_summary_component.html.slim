@@ -1,0 +1,5 @@
+h2= @title
+p #{@date} at #{@time}
+
+p <b>IMPORTANT</b> Please make sure you turn up!
+p If you can't make it, please #{link_to 'cancel', new_booking_cancellation_path(@booking)} your booking to give others a chance to attend.

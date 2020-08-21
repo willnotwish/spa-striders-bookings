@@ -6,6 +6,6 @@ h1 Your bookings
 - else  
   .bookings-list
     - @bookings.each do |booking|
-      = render partial: 'booking', object: booking
+      = render(BookingSummaryComponent.new(booking: booking))
 
-= link_to 'Make a booking', [:new, :booking]
+= link_to 'Make a new booking', [:new, :booking]

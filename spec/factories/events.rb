@@ -1,8 +1,7 @@
 FactoryBot.define do
   factory :event do
-    name { "MyString" }
-    description { "MyText" }
-    starts_at { "2020-08-19 10:32:42" }
-    capacity { 1 }
+    name { "Hill session" }
+    starts_at { 2.weeks.from_now }
+    capacity { 10 }
   end
 end

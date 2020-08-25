@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type"
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    title Spa Striders | Session Bookings Admin
+    = csrf_meta_tags
+    = csp_meta_tag
+    / = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    / = stylesheet_pack_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+  body
+    header.section
+      = render partial: 'header'
+    
+    = render FlashComponent.new
+
+    main.section     
+      .container= yield
+
+    footer.section  
+      = render partial: 'footer'

@@ -1,0 +1,37 @@
+// Place all the styles related to the admin/event_publications controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.event-list {
+  margin: 0;
+  padding: 0;
+
+  &__item:nth-child(odd) {
+    background-color: lightgray;
+  }
+}
+
+.admin-event-list-item {
+  // border: 1px dotted red;
+
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 1rem;
+
+  &__title {
+    // grid-column: 1 / 2;
+  }
+
+  &__date {
+    // grid-column: 1 / 2;
+  }
+
+  &__time {
+    // grid-column: 1 / 2;
+  }
+
+  &__state {
+    // grid-column: 1 / 2;
+  }
+}

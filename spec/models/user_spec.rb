@@ -10,6 +10,16 @@ RSpec.describe User, type: :model do
   it { is_expected.to have_many(:bookings) }
   it { is_expected.to have_many(:events).through(:bookings) }
   it { is_expected.to have_one(:contact_number) }
+  
+  it { is_expected.not_to be_admin }
+
+  context 'when the admin flag is true' do
+    before do
+      user.admin = true
+    end
+
+    it { is_expected.to be_admin }
+  end
 
   describe 'guest or member' do
     it { is_expected.not_to be_guest }

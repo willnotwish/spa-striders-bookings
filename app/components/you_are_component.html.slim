@@ -1,0 +1,5 @@
+.c-you-are
+  |You are logged in as #{@name} (#{@email})
+  = render UserStatusBadgeComponent.new(user: @user, kind: :status)
+  = render UserStatusBadgeComponent.new(user: @user, kind: :admin) if @admin
+  | Not you? #{link_to 'log out', nil}

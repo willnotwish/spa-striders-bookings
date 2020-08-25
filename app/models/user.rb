@@ -5,6 +5,9 @@ class User < ApplicationRecord
   has_many :bookings
   has_many :events, through: :bookings
 
+  has_many :confirmed_bookings, -> { confirmed }, class_name: 'Booking'
+  has_many :confirmed_events, through: :confirmed_bookings, source: :event
+
   has_one :contact_number
 
   delegate :phone, to: :contact_number, allow_nil: true

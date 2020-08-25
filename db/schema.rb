@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_142617) do
+ActiveRecord::Schema.define(version: 2020_08_24_100418) do
 
   create_table "bookings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "event_id", null: false
@@ -19,11 +19,16 @@ ActiveRecord::Schema.define(version: 2020_08_19_142617) do
     t.text "notes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.timestamp "locked_at"
+    t.bigint "locked_by_id"
+    t.timestamp "honoured_at"
+    t.bigint "honoured_by_id"
+    t.bigint "made_by_id"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
   end
 
-  create_table "contact_numbers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "contact_numbers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "phone"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -39,6 +44,8 @@ ActiveRecord::Schema.define(version: 2020_08_19_142617) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "aasm_state"
+    t.bigint "published_by"
+    t.timestamp "published_at"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -50,6 +57,7 @@ ActiveRecord::Schema.define(version: 2020_08_19_142617) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "status"
     t.timestamp "guest_period_started_at"
+    t.boolean "admin"
     t.index ["members_user_id"], name: "index_users_on_members_user_id", unique: true
   end
 

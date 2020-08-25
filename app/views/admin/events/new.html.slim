@@ -1,0 +1,9 @@
+h2.title New Event
+
+= simple_form_for [:admin, @event] do |builder|
+  = builder.input :name
+  = builder.input :description
+  = builder.input :capacity
+  = builder.input :starts_at
+
+  = builder.button :submit

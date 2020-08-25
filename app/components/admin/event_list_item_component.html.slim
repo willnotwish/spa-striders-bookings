@@ -1,0 +1,12 @@
+/ .event-list-item
+/   .event-list-item__title= @title
+/   .event-list-item__date= @date
+/   .event-list-item__time= @time
+/   .event-list-item__bookings-count= @bookings_count
+
+= bem_block(modify: :state) do
+  = element(:title)
+  = element(:date)
+  = element(:time)
+  / = element(:capacity)
+  = element(:state)

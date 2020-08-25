@@ -128,7 +128,7 @@ RSpec.describe Event, type: :model do
     let(:booking) { hills.bookings.confirmed.first }
 
     it 'cancelling one of the bookings means that there is then one event with space' do
-      expect { booking.cancel! }.to change { described_class.with_space.to_a.length }.from(0).to(1)
+      expect { booking.update(aasm_state: :cancelled) }.to change { described_class.with_space.to_a.length }.from(0).to(1)
     end
   end
 end

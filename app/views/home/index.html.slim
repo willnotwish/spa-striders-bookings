@@ -8,4 +8,4 @@ h1 Your bookings
     - @bookings.each do |booking|
       = render(BookingSummaryComponent.new(booking: booking))
 
-= link_to 'Make a new booking', [:new, :booking]
+= link_to 'Make a new booking', [:new, :self_service_booking]

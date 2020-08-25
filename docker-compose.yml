@@ -35,6 +35,7 @@ services:
       - DATABASE_NAME=members
       - DATABASE_PASSWORD=root
       - DATABASE_USERNAME=root
+      - WEBPACKER_DEV_SERVER_HOST=webpack
     stdin_open: true
     tty: true
     working_dir: /app
@@ -46,6 +47,7 @@ services:
       - 3052:3000
     depends_on: 
       - mysql
+      - webpack
     command:
       - bundle 
       - exec
@@ -53,6 +55,20 @@ services:
       - s 
       - -b
       - 0.0.0.0
+
+  webpack:
+    image: willnotwish/ruby-node:2.7.1
+    environment:
+      - NODE_ENV=development
+      - RAILS_ENV=development
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+    volumes:
+      - .:/app
+      - bundle-cache:/usr/local/bundle
+    ports:
+      - 3035:3035
+    command: ./bin/webpack-dev-server
+
 
   test: 
     image: willnotwish/ruby-node:2.7.1

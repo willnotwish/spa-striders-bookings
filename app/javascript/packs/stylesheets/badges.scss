@@ -1,0 +1,12 @@
+.user-badge {
+  // background-color: yellow;
+  font-size: small;
+  padding: 0.5rem;
+  margin: 0 1rem;
+  border: 1px solid black;
+  display: inline-block;
+
+  &--admin {
+    background-color: red;
+  }
+}

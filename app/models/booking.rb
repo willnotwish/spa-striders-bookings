@@ -2,32 +2,18 @@ class Booking < ApplicationRecord
   belongs_to :event
   belongs_to :user
 
+  with_options class_name: 'User', optional: true do
+    belongs_to :locked_by
+    belongs_to :honoured_by
+    belongs_to :made_by
+  end
+
   enum aasm_state: {
+    provisional: 1,
     confirmed: 2,
     cancelled: 3,
     deleted: 4
   }
-
-  include AASM
-  aasm do
-    state :confirmed, initial: true
-    state :cancelled
-
-    event :cancel do
-      transitions from: :confirmed, to: :cancelled, guard: :future?
-    end
-
-    event :reinstate do
-      transitions from: :cancelled,
-                  to: :confirmed, 
-                  guard: [:event_has_space?, :future?]
-    end
-  end
-
-  validates :event, uniqueness: { scope: :user },
-                    has_space: true,
-                    future: true,
-                    on: :create
 
   delegate :future?, :past?, to: :event
 
@@ -43,23 +29,5 @@ class Booking < ApplicationRecord
     def within(period)
       joins(:event).merge Event.within(period)
     end
-  end
-
-  private
-
-  def event_has_space?
-    event.has_space?
-  end
-
-  def check_event_is_not_full
-    return unless event
-
-    @errors[:event] << "is full" unless event_has_space?
-  end
-
-  def check_event_is_in_the_future
-    return unless event
-
-    @errors[:event] << "has already happened" unless future?
   end
 end

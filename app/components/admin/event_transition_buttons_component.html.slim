@@ -1,0 +1,3 @@
+.buttons
+  - Event.aasm.events.map(&:name).each do |name|
+    = render Admin::EventTransitionComponent.new(name: name, event: event, modifier: button_modifier(name))

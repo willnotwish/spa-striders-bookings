@@ -1,17 +1,16 @@
 class Cancellation
   include ActiveModel::Model
-  include ActiveModel::Validations
   
   attr_accessor :booking
 
-  validates :booking, presence: true
-  validate :check_booking
+  validates :booking, presence: true, future: true
+  # validate :check_booking
 
   def save
     return false unless valid?
 
-    booking.cancel
-    booking.save
+    booking.update(aasm_state: :cancelled)
+    # booking.save
   end
 
   class << self
@@ -22,11 +21,11 @@ class Cancellation
     end
   end
 
-  private
+  # private
 
-  def check_booking
-    return if !booking || booking.may_cancel?
+  # def check_booking
+  #   return if !booking || booking.may_cancel?
 
-    @errors[:booking] << 'may not be cancelled at this time' 
-  end
+  #   @errors[:booking] << 'may not be cancelled at this time' 
+  # end
 end

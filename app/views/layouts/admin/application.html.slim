@@ -11,7 +11,8 @@ html
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
     header.section
-      = render partial: 'header'
+      .container
+        = render partial: 'header'
     
     = render FlashComponent.new
 
@@ -19,4 +20,4 @@ html
       .container= yield
 
     footer.section  
-      = render partial: 'footer'
+      .container= render partial: 'footer'

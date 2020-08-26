@@ -11,4 +11,7 @@ section.main-content__section
 
   - else  
     ul.event-list
-      = render(Admin::EventComponent.with_collection(@events, except: :bookings))
+      - @events.each do |event|
+        li.event-list__item
+          = link_to [:admin, event]
+            = render(Admin::EventListItemComponent.new(event: event))

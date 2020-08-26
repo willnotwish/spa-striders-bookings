@@ -1,0 +1,13 @@
+.event
+  .event__name= name
+  .event__date= date
+  .event__time= time
+  .event__status
+    = render(Admin::EventStatusBadgeComponent.new(event: event))
+  
+  .event__booking-progress
+    = render(Admin::BookingProgressComponent.new(event: event))
+
+  - if show_bookings?
+    .event__bookings
+      = render(Admin::BookingComponent.with_collection(bookings, except: :event))

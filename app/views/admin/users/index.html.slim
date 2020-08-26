@@ -1,2 +1,13 @@
-h1 Admin::Users#index
-p Find me in app/views/admin/users/index.html.slim
+h2.title Users
+
+ection.main-content__section
+  - if @users.empty?
+    .notification.info There are no users yet.
+
+  - else  
+    ul.event-list
+      - @users.each do |user|
+        li.event-list__item
+          = link_to [:admin, user]
+            = render(Admin::UserListItemComponent.new(user: user))
+

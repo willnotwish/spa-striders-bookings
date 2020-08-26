@@ -9,7 +9,7 @@ module Admin
     def button_modifier(transition)
       case transition
       when :publish
-        'is-danger'
+        'is-success'
       when :restrict
         'is-warning'
       when :lock

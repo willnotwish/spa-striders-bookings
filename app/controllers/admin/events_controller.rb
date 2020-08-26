@@ -5,7 +5,7 @@ module Admin
     respond_to :html
     
     def index
-      @events = base_scope
+      @events = base_scope.order(:starts_at)
       respond_with :admin, @events
     end
 
@@ -43,7 +43,6 @@ module Admin
     end
 
     def base_scope
-      # ::Event.all
       policy_scope(::Event)
     end
   end

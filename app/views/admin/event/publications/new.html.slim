@@ -6,7 +6,7 @@ h4.subtitle= @event.starts_at.to_date
 
 
 = simple_form_for @publication do |builder|
-  = builder.button :submit, 'Publish now', class: "button is-primary"
+  = builder.button :submit, 'Publish now', class: "button is-success"
 
 nav
   .cancel= link_to 'Back to event', [:admin, @event]

@@ -1,4 +1,6 @@
 class ApplicationComponent < ViewComponent::Base
+  attr_reader :except
+  
   def current_user
     helpers.current_user
   end
@@ -16,9 +18,17 @@ class ApplicationComponent < ViewComponent::Base
     content_tag(:div, content, class: classes.join(' '))
   end
 
-  def element(name = nil, options = {})
-    content = send(name)
+  def element(name = nil, options = {}, &block)
+    if block
+      content = capture(&block)
+    else
+      content = send(name)
+    end
     tag_name = options[:tag] || :div
-    content_tag(tag_name, content, class: "#{root_class}__#{name}")
+    content_tag(tag_name, content, class: "#{root_class}__#{name} #{options[:class]}")
+  end
+
+  def show?(part)
+    except.include?(part) ? false : true
   end
 end

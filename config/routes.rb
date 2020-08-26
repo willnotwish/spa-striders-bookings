@@ -32,7 +32,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :users, except: NEW_AND_CREATE
+    resources :users, only: %i[index show]
 
     resource :dashboard, only: :show
     root to: 'dashboard#show'

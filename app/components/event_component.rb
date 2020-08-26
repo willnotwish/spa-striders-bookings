@@ -4,7 +4,8 @@ class EventComponent < ApplicationComponent
               :date,
               :time,
               :state,
-              :capacity
+              :capacity,
+              :bookings
 
   def initialize(event:)
     @event = event
@@ -13,6 +14,7 @@ class EventComponent < ApplicationComponent
     @time = I18n.l(event.starts_at, format: :hm)
     @state = event.aasm_state
     @capacity = event.capacity || 'unlimited'
+    @bookings = event.confirmed_bookings
   end
 
   def bookings_count

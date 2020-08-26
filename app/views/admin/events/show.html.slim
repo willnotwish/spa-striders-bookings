@@ -1,3 +1,10 @@
+h2.title
+  = @event.name
+  |&nbsp;
+  = render Admin::EventStatusBadgeComponent.new(event: @event)
+
+= link_to 'Edit', [:edit, :admin, @event]
+
 = render Admin::EventDetailComponent.new(event: @event)
 hr
 = render Admin::EventTransitionButtonsComponent.new(event: @event)

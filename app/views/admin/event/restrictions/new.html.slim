@@ -8,7 +8,6 @@ h4.subtitle= @event.starts_at.to_date
 
 
 = simple_form_for @restriction do |builder|
-  = builder.button :submit, 'Restrict now', class: 'button is-primary'
+  = builder.button :submit, 'Restrict now', class: 'button is-warning'
 
-nav
-  .cancel= link_to 'Back to event', [:admin, @event]
+= link_to 'Back to event', [:admin, @event]

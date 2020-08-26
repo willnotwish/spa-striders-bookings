@@ -11,7 +11,7 @@ module Admin
       def create
         @publication.save
         
-        respond_with @restriction, location: [:admin, @event]
+        respond_with @publication, location: [:admin, @event]
       end
 
       private

@@ -1,0 +1,13 @@
+.booking
+  - if show_user?
+    .booking__user-name= link_to user_name, [:admin, user]
+    .booking__user-email= user_email
+    .booking__user-phone
+      = render(ContactNumberComponent.new(contact_number: contact_number))
+
+  - if show_event?
+    .booking__event-name= link_to event_name, [:admin, event]
+    .booking__event-date= event_date
+
+  - if show_status?
+    .booking__state= status

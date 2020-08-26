@@ -1,18 +1,25 @@
 class UserStatusBadgeComponent < ApplicationComponent
-  BASE_CLASS = 'user-badge'
+  BULMA_BASE_CLASS = 'tag'
 
-  attr_reader :text
+  attr_reader :text, :kind, :bulma_modifier
 
   def initialize(user:, kind:)
     @kind = kind
     if kind == :status
-      @text = user.guest? ? 'guest' : 'member'
+      if user.guest?
+        @text = 'Guest'
+        @bulma_modifier = 'is-warning'
+      else
+        @text = 'Member'
+        @bulma_modifier = 'is-success'
+      end
     elsif kind == :admin
-      @text = 'admin'
+      @text = 'Admin'
+      @bulma_modifier = 'is-dark'
     end
   end
 
   def html_class
-    "#{BASE_CLASS} #{BASE_CLASS}--#{@kind}"
+    "#{BULMA_BASE_CLASS} #{bulma_modifier}"
   end
 end

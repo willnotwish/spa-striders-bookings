@@ -1,2 +1,9 @@
-h1 Admin::Events#edit
-p Find me in app/views/admin/events/edit.html.slim
+h2.title Edit event
+
+= simple_form_for [:admin, @event], wrapper: :bulma do |builder|
+  = builder.input :name
+  = builder.input :capacity
+  = builder.input :starts_at
+  = builder.button :submit, class: 'button is-primary'
+
+= link_to 'Back to event', [:admin, @event]

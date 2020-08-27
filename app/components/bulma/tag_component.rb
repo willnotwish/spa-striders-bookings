@@ -1,0 +1,16 @@
+module Bulma
+  class TagComponent < ApplicationComponent
+    attr_reader :text, :modifier
+
+    def initialize(text:, modifier:)
+      @text = text&.humanize
+      @modifier = modifier
+    end
+
+    def html_class
+      classes = ['tag']
+      classes << "is-#{modifier}" if modifier.present?
+      classes.join(' ')
+    end
+  end
+end

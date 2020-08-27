@@ -1,10 +1,8 @@
-h2.title
-  = @event.name
-  |&nbsp;
-  = render Admin::EventStatusBadgeComponent.new(event: @event)
-
+= render(Admin::EventComponent.new(event: @event, except: :bookings, root_class: 'admin-event-detail'))
 = link_to 'Edit', [:edit, :admin, @event]
-
-= render Admin::EventDetailComponent.new(event: @event)
 hr
 = render Admin::EventTransitionButtonsComponent.new(event: @event)
+hr
+h3.subtitle Bookings
+ul.event-booking-list
+  = render Admin::BookingComponent.with_collection(@event.bookings, except: :event, root_class: 'event-booking-list-item', root_tag: 'li')

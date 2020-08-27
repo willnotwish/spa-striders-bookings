@@ -1,17 +1,24 @@
 module Admin
   class BookingComponent < ApplicationComponent
-    attr_reader :booking, :status, :except
+    # include StartsAtTiming
+    # include UserNaming
+
+    attr_reader :booking
     
-    delegate :event, :user, to: :booking
+    delegate :event, :user, :confirmed?, :cancelled?, to: :booking
 
     delegate :starts_at, to: :event
     delegate :contact_number, to: :user
 
-    def initialize(booking:, except: [])
+    def initialize(booking:, except: [], only: [], root_class: 'admin-event', root_tag: :div)
+      super(except: except, only: only, root_class: root_class, root_tag: root_tag)
       @booking = booking
-      @status = booking.aasm_state
-      @except = except.respond_to?(:each) ? except : [except]
     end
+
+    # def initialize(booking:, options: {})
+    #   super(options)
+    #   @booking = booking
+    # end
 
     def event_name
       event.name
@@ -19,6 +26,10 @@ module Admin
 
     def event_date
       I18n.l(starts_at, format: :date)
+    end
+
+    def state
+      booking.aasm_state
     end
 
     def user_name
@@ -39,10 +50,6 @@ module Admin
 
     def show_status?
       show?(:status)
-    end
-
-    def show?(part)
-      except.include?(part) ? false : true
     end
   end
 end

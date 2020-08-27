@@ -1,14 +1,20 @@
 module Admin
   class EventComponent < ApplicationComponent
+    # include StartsAtTiming
+
     attr_reader :event
 
     delegate :bookings, :name, :starts_at, :capacity, to: :event
 
-    def initialize(event:, except: [], only: [])
+    def initialize(event:, except: [], only: [], root_class: 'admin-event', root_tag: :div)
+      super(except: except, only: only, root_class: root_class, root_tag: root_tag)
       @event = event
-      @except = except.respond_to?(:each) ? except : [except]
-      @only = only
     end
+
+    # def initialize(event:, options: {})
+    #   super(options)
+    #   @event = event
+    # end
 
     def show_bookings?
       show?(:bookings)

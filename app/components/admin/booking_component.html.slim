@@ -1,13 +1,14 @@
-.booking
+= root do |bem|
   - if show_user?
-    .booking__user-name= link_to user_name, [:admin, user]
-    .booking__user-email= user_email
-    .booking__user-phone
+    = bem.element('user-name') { link_to(user_name, [:admin, user]) }
+    = bem.element('user-email') { user_email }
+    = bem.element('user-phone') do
       = render(ContactNumberComponent.new(contact_number: contact_number))
 
   - if show_event?
-    .booking__event-name= link_to event_name, [:admin, event]
-    .booking__event-date= event_date
+    = bem.element('event-name') { link_to(event_name, [:admin, event]) }
+    = bem.element('event-date') { event_date }
 
   - if show_status?
-    .booking__state= status
+    = bem.element('state') do
+      = render(Bulma::TagComponent.new(text: state, modifier: confirmed? ? :success : :warning))

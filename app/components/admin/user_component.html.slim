@@ -1,9 +1,11 @@
-.user
-  .user__name= name
-  .user__email= email
-  .user__phone
+= root do |bem|
+  = bem.element('name') { name }
+  = bem.element('email') { email }
+  = bem.element('phone') do
     = render(ContactNumberComponent.new(contact_number: contact_number))
 
   - if show_bookings?
-    .user__bookings
-      = render(Admin::BookingComponent.with_collection(bookings, except: :user))
+    = bem.element('bookings') do
+      h3.subtitle Bookings
+      ul.user-bookings
+        = render(Admin::BookingComponent.with_collection(bookings, except: :user, root_class: 'user-bookings-list-item', root_tag: 'li' ))

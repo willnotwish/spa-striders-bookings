@@ -8,7 +8,6 @@ nav.main-content__section
 section.main-content__section
   - if @events.empty?
     .notification.info There are no events yet.
-
   - else  
     ul.event-list
-      = render(Admin::EventComponent.with_collection(@events, except: :bookings))
+      = render(Admin::EventComponent.with_collection(@events, except: :bookings, root_class: 'admin-event-list-item', root_tag: :li ))

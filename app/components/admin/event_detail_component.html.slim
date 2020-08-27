@@ -1,6 +1,0 @@
-= bem_block(modify: :state) do
-  = element(:date)
-  = element(:time)
-  = element(:progress)
-  = element(:bookings) do
-    = render(Admin::BookingComponent.with_collection(bookings, except: :event))

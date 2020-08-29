@@ -1,0 +1,13 @@
+h2.title Restrict Event 
+h3.subtitle= @event.name
+h4.subtitle= @event.starts_at.to_date
+
+.notification
+  |Restricting this event makes it unavailable for others to book.
+    Booking cancellations are still permitted.
+
+
+= simple_form_for @restriction do |builder|
+  = builder.button :submit, 'Restrict now', class: 'button is-warning'
+
+= link_to 'Back to event', [:admin, @event]

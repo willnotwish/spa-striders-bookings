@@ -1,0 +1,6 @@
+.you-are.level
+  .you-are__identity
+    |You are logged in as #{name} (#{email}) &nbsp;    
+    = render UserStatusBadgeComponent.new(user: user, kind: :admin)
+  .you-are__logout= button_to('Logout', :logout, method: :delete, class: 'button is-danger is-small')
+hr

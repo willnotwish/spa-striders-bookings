@@ -1,0 +1,7 @@
+.section
+  h3.subtitle Bookings
+  p Future <strong>#{confirmed_future_bookings_count}</strong>
+  p Past <strong>#{confirmed_past_bookings_count}</strong>
+
+.section
+  = render(Admin::BookingComponent.with_collection(bookings, except: :user))

@@ -1,0 +1,13 @@
+h2.title Events
+
+nav.main-content__section
+  ul.admin-nav
+    li.admin-nav__item
+      = link_to 'Add a new event', [:new, :admin, :event]
+
+section.main-content__section
+  - if @events.empty?
+    .notification.info There are no events yet.
+  - else  
+    ul.event-list
+      = render(Admin::EventComponent.with_collection(@events, except: :bookings, root_class: 'admin-event-list-item', root_tag: :li ))

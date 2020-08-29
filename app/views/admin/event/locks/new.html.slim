@@ -1,0 +1,14 @@
+h2.title Lock Event 
+h3.subtitle= @event.name
+h4.subtitle= @event.starts_at.to_date
+
+.notification
+  |Locking this event makes it unavailable for others to book or to cancel. 
+  |Nothing can be done with it until an admin unlocks (publishes or restricts) it.
+
+
+= simple_form_for @lock do |builder|
+  = builder.button :submit, 'Lock now', class: "button is-dark"
+
+nav
+  .cancel= link_to 'Back to event', [:admin, @event]

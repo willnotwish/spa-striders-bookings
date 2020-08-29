@@ -7,17 +7,17 @@ class BookingsController < ApplicationController
     respond_with @bookings
   end
 
-  def new
-    @booking = current_user.bookings.build(booking_params)
+  # def new
+  #   @booking = current_user.bookings.build(booking_params)
 
-    respond_with @booking
-  end
+  #   respond_with @booking
+  # end
 
-  def create
-    @booking = current_user.bookings.create(booking_params)
+  # def create
+  #   @booking = current_user.bookings.create(booking_params)
 
-    respond_with @booking
-  end
+  #   respond_with @booking
+  # end
 
   def show
     @booking = current_user.bookings.find params[:id]
@@ -25,9 +25,9 @@ class BookingsController < ApplicationController
     respond_with @booking
   end
 
-  private
+  # private
 
-  def booking_params
-    params.fetch(:booking, {}).permit(:event_id)
-  end
+  # def booking_params
+  #   params.fetch(:booking, {}).permit(:event_id)
+  # end
 end

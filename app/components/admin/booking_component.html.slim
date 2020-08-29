@@ -1,0 +1,14 @@
+= root do |bem|
+  - if show_user?
+    = bem.element('user-name') { link_to(user_name, [:admin, user]) }
+    = bem.element('user-email') { user_email }
+    = bem.element('user-phone') do
+      = render(ContactNumberComponent.new(contact_number: contact_number))
+
+  - if show_event?
+    = bem.element('event-name') { link_to(event_name, [:admin, event]) }
+    = bem.element('event-date') { event_date }
+
+  - if show_status?
+    = bem.element('state') do
+      = render(Bulma::TagComponent.new(text: state, modifier: confirmed? ? :success : :warning))

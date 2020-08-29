@@ -1,0 +1,2 @@
+- url = disabled? ? nil : [:admin, event, name]
+= link_to name.to_s.humanize, url, class: html_class, disabled: disabled?

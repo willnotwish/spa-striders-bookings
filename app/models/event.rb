@@ -3,21 +3,29 @@ class Event < ApplicationRecord
   has_many :confirmed_bookings, -> { confirmed }, class_name: 'Booking'
 
   enum aasm_state: {
-    draft: 1,
-    published: 2,
-    restricted: 3,
-    deleted: 4 
+    draft:      10,
+    published:  20,
+    restricted: 30,
+    locked:     40
   }
   
   include AASM  
   aasm do
-    state :draft, initial: true
-    state :restricted
-    state :published
-    state :deleted
+    state :draft, initial: true # no bookings allowed
+    state :published            # full access by everyone
+    state :restricted           # allows cancellations but no new bookings or reinstatements
+    state :locked               # allows neither cancellations nor reinstatements
 
     event :publish do
-      transitions to: :published
+      transitions from: %i[draft restricted locked], to: :published
+    end
+
+    event :restrict do
+      transitions from: %i[draft published locked], to: :restricted
+    end
+
+    event :lock do
+      transitions from: %i[draft published restricted], to: :locked
     end
   end
 

@@ -1,0 +1,8 @@
+h2.title Users
+
+section.main-content__section
+  - if @users.empty?
+    .notification.info There are no users yet.
+  - else  
+    ul.admin-user-list
+      = render(Admin::UserComponent.with_collection(@users, root_class: 'admin-user-list-item', root_tag: :li, except: :bookings ))

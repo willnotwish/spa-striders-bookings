@@ -1,0 +1,7 @@
+.section
+  .c-flash.container
+    - if flash.alert.present? 
+      .c-flash__alert.notification.is-danger= flash.alert
+    - if flash[:notice].present?
+      .c-flash__notice.notification.is-success= flash.notice
+  

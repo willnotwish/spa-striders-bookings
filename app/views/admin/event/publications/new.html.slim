@@ -1,0 +1,12 @@
+h2.title Publish Event 
+h3.subtitle= @event.name
+h4.subtitle= @event.starts_at.to_date
+
+.notification Publishing this event makes it available for others to book.
+
+
+= simple_form_for @publication do |builder|
+  = builder.button :submit, 'Publish now', class: "button is-success"
+
+nav
+  .cancel= link_to 'Back to event', [:admin, @event]

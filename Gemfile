@@ -78,3 +78,6 @@ gem 'aasm'
 
 # Reactive style UI
 gem 'view_component'
+
+# Authorisatioon
+gem 'pundit'

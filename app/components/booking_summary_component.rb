@@ -1,4 +1,4 @@
-class BookingSummaryComponent < ViewComponent::Base
+class BookingSummaryComponent < ApplicationComponent
   def initialize(booking:)
     @booking = booking
     @title = booking.event.name

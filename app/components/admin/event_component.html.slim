@@ -1,0 +1,14 @@
+= root do |bem|
+  = bem.element('name') { link_to(name, [:admin, event]) }
+  = bem.element('date') { date }
+  = bem.element('time') { time }
+  
+  = bem.element('status') do
+    = render(Admin::EventStatusBadgeComponent.new(event: event))
+  
+  = bem.element('booking-progress') do
+    = render(Admin::BookingProgressComponent.new(event: event))
+  
+  - if show_bookings?
+    = bem.element('bookings') do
+      = render(Admin::BookingComponent.with_collection(bookings, except: :event, root_class: 'xxx' ))

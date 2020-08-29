@@ -11,11 +11,6 @@ module Admin
       @event = event
     end
 
-    # def initialize(event:, options: {})
-    #   super(options)
-    #   @event = event
-    # end
-
     def show_bookings?
       show?(:bookings)
     end

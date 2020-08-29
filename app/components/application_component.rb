@@ -1,20 +1,20 @@
 class ApplicationComponent < ViewComponent::Base
   attr_reader :except, :root_class, :root_tag
 
-  # def initialize(except: [], only: [], root_class: 'c-component', root_tag: :div)
-  #   @except = except.respond_to?(:each) ? except : [except]
-  #   @only = only
-  #   @root_class = root_class
-  #   @root_tag = root_tag  
-  # end
-
-  def initialize(options = {})
-    except = options.fetch(:except, [])
+  def initialize(except: [], only: [], root_class: 'c-component', root_tag: :div)
     @except = except.respond_to?(:each) ? except : [except]
-    @only = options.fetch(:only, [])
-    @root_class = options.fetch(:root_class, 'c-component')
-    @root_tag = options.fetch(:root_tag, 'div')  
+    @only = only
+    @root_class = root_class
+    @root_tag = root_tag  
   end
+
+  # def initialize(options = {})
+  #   except = options.fetch(:except, [])
+  #   @except = except.respond_to?(:each) ? except : [except]
+  #   @only = options.fetch(:only, [])
+  #   @root_class = options.fetch(:root_class, 'c-component')
+  #   @root_tag = options.fetch(:root_tag, 'div')  
+  # end
 
   def current_user
     helpers.current_user

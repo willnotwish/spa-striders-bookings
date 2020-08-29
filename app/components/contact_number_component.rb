@@ -3,7 +3,7 @@ class ContactNumberComponent < ApplicationComponent
 
   def initialize(contact_number:)
     @contact_number = contact_number
-    @phone = contact_number&.phone || 'No contact number given'
+    @phone = contact_number&.phone || 'No contact number'
   end
 
   def number_given?

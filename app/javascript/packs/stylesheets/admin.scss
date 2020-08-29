@@ -1,8 +1,9 @@
-// Bulma customisations here
+// admin.scss - the main importing sass file for admin screens
+
+// Bulma customisations (variables) here
 
 @import "~bulma";
 
 @import "admin/layout";
 @import "admin/events";
-@import "badges";
-// @import "home";
+@import "admin/users";

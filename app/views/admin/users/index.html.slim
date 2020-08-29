@@ -4,5 +4,5 @@ section.main-content__section
   - if @users.empty?
     .notification.info There are no users yet.
   - else  
-    ul.user-list
-      = render(Admin::UserComponent.with_collection(@users, root_class: 'admin-user-list-item', root_tag: :li ))
+    ul.admin-user-list
+      = render(Admin::UserComponent.with_collection(@users, root_class: 'admin-user-list-item', root_tag: :li, except: :bookings ))

@@ -10,15 +10,12 @@ module Admin
     delegate :starts_at, to: :event
     delegate :contact_number, to: :user
 
-    def initialize(booking:, except: [], only: [], root_class: 'admin-event', root_tag: :div)
+    ROOT_CLASS = 'admin-booking'
+
+    def initialize(booking:, except: [], only: [], root_class: ROOT_CLASS, root_tag: :div)
       super(except: except, only: only, root_class: root_class, root_tag: root_tag)
       @booking = booking
     end
-
-    # def initialize(booking:, options: {})
-    #   super(options)
-    #   @booking = booking
-    # end
 
     def event_name
       event.name
@@ -50,6 +47,12 @@ module Admin
 
     def show_status?
       show?(:status)
+    end
+
+    class << self
+      def as_list(bookings, except: [], only: [], root_class:)
+        with_collection(bookings, except: except, only: [], root_class: root_class, root_tag: 'li')
+      end
     end
   end
 end

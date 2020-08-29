@@ -1,8 +1,13 @@
 class YouAreComponent < ApplicationComponent
+  attr_reader :user
+
+  delegate :email, :admin?, to: :user
+
   def initialize(user:)
     @user = user
-    @email = user.email
+  end
+
+  def name
     @name = user.first_name + ' ' + user.last_name
-    @admin = user.admin?
   end
 end

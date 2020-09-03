@@ -27,4 +27,8 @@ class User < ApplicationRecord
 
     Time.now > guest_period_started_at + 4.weeks
   end
+
+  def has_accepted_terms?
+    accepted_terms_at.present?
+  end
 end

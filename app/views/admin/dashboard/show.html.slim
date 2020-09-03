@@ -1,9 +1,10 @@
-h1 Admin Dashboard
+= render Admin::PageTitleComponent.new(title: 'Dashboard')
 
-nav
-  ul.admin-menu
-    li.admin-menu__item= link_to 'Events', [:admin, :events]
-    li.admin-menu__item= link_to 'Users', [:admin, :users]
+.admin-dashboard
+  nav.admin-dashboard__nav
+    ul.admin-menu
+      li.admin-menu__item= link_to 'Events', [:admin, :events]
+      li.admin-menu__item= link_to 'Users', [:admin, :users]
 
-section
-  h2 This week's bookings here <small>(coming soon)</small>
+  .admin-dashboard__main
+    = render Admin::DashboardComponent.new(events: @events)

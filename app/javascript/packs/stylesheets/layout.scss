@@ -1,0 +1,49 @@
+$bar-colour: lighten(grey, 25%);
+$admin-bar-colour: lighten(red, 25%);
+
+.c-header {
+  padding-bottom: 1rem;
+  border-bottom: thick solid $bar-colour;
+
+  display: grid;
+  grid-gap: 1rem;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  align-items: center;
+
+  &--admin {
+    border-bottom: thick solid $admin-bar-colour;
+  }
+}
+
+.c-you-are {
+  &__identity {
+    margin-bottom: 1rem;
+  }
+}
+
+.c-footer {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: thick solid $bar-colour;
+  padding-top: 1rem;
+  font-size: smaller;
+
+  &--admin {
+    border-top: thick solid $admin-bar-colour;
+  }
+
+  &__contact-number {
+    grid-column: 1 / -1;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.c-contact-number {
+  &__label, &__phone, &__change {
+    display: inline-block;
+    margin-right: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}

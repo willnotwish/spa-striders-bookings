@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_100418) do
+ActiveRecord::Schema.define(version: 2020_08_29_191333) do
 
   create_table "bookings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "event_id", null: false
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2020_08_24_100418) do
     t.string "status"
     t.timestamp "guest_period_started_at"
     t.boolean "admin"
+    t.timestamp "accepted_terms_at"
     t.index ["members_user_id"], name: "index_users_on_members_user_id", unique: true
   end
 

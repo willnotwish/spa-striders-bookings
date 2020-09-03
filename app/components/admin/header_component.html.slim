@@ -1,0 +1,18 @@
+= root do |bem|
+  = bem.element :title do
+    = link_to [:admin, :root] do
+      = render Bulma::TitleComponent.new(text: title)
+  
+  - if user_logged_in?
+    = bem.element :identity do
+      = render YouAreComponent.new(user: current_user, except: %i[admin_badge contact_number])
+    = bem.element :logout do
+      = button_to 'Logout', :logout, method: :delete, class: 'button is-small'
+    = bem.element :root_link do
+        = link_to 'View as regular user', :root
+  
+  - else
+    = bem.element :need_login do
+      .notification.is-danger You need to log in to use this app
+
+

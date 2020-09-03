@@ -2,17 +2,21 @@ doctype html
 html
   head
     meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    meta name="viewport" content="width=device-width, initial-scale=1"
     title Spa Striders | Session Bookings
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   body
-    header.main-header
-      = render partial: 'header'
+    .section
+      .container
+        = render HeaderComponent.new
+
+    = render FlashComponent.new
+
+    .container
+      main= yield
     
-    .main-content
-      = yield
-    
-    footer.main-footer
-      = render partial: 'footer'
+    .section
+      .container
+        = render FooterComponent.new

@@ -3,7 +3,11 @@ require 'support/booking_examples'
 
 RSpec.describe SelfServiceBooking, type: :model do
   let(:booking) { subject }
-  let(:steve_runner) { FactoryBot.create(:user) }
+  let(:steve_runner) do 
+    FactoryBot.create(:user).tap do |user|
+      FactoryBot.create(:contact_number, user: user)
+    end
+  end
   let(:hills) { nil }
 
   before do
@@ -13,6 +17,20 @@ RSpec.describe SelfServiceBooking, type: :model do
 
   it { is_expected.to validate_presence_of(:user) }
   it { is_expected.to validate_presence_of(:event) }
+
+  context 'when Steve Runner has given no contact number' do
+    let(:steve_runner) { FactoryBot.create(:user) }
+    it { is_expected.to have(1).error_on(:user) }
+  end
+
+  context 'when Steve Runner has not accepted terms' do
+    let(:steve_runner) do 
+      FactoryBot.create(:user, accepted_terms_at: nil).tap do |user|
+        FactoryBot.create(:contact_number, user: user)
+      end
+    end
+      it { is_expected.to have(1).error_on(:user) }
+  end
 
   context 'for an empty hills session starting next week' do
     let(:hills) { FactoryBot.create(:event, starts_at: 1.week.from_now) }

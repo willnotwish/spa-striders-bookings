@@ -1,9 +1,9 @@
-h1 New booking
+h2.title New booking
 
 - Event.published.future.not_booked_by(current_user).tap do |events|
   - if events.empty?
-    .notification There are no events for you to book yet. Please try again later.
+    .notification.is-info There are no events for you to book right now. Please try again later.
   - else
-    = simple_form_for @booking do |builder|
+    = simple_form_for @self_service_booking, wrapper: :bulma do |builder|
       = builder.input :event_id, collection: events, include_blank: false
-      = builder.button :submit
+      = builder.button :submit, 'Book now', class: 'button is-primary'

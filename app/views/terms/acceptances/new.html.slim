@@ -1,0 +1,6 @@
+h2.title Terms &amp; Conditions
+
+= render partial: 'terms'
+hr
+= form_tag [:terms, :acceptance] do
+  = submit_tag 'I accept', class: 'button is-primary'

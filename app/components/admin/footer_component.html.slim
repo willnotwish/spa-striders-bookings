@@ -1,0 +1,6 @@
+= root do |bem|
+  = bem.element(:events) do
+    = link_to 'Events', [:admin, :events]
+  = bem.element(:users) do
+    = link_to 'Users', [:admin, :users]
+  = bem.element(:copyright)

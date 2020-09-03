@@ -1,4 +1,4 @@
-h2.title Events
+= render(Admin::PageTitleComponent.new(title: 'Events'))
 
 nav.main-content__section
   ul.admin-nav
@@ -10,4 +10,4 @@ section.main-content__section
     .notification.info There are no events yet.
   - else  
     ul.event-list
-      = render(Admin::EventComponent.with_collection(@events, except: :bookings, root_class: 'admin-event-list-item', root_tag: :li ))
+      = render(Admin::EventComponent.as_list(@events, except: :bookings, root_class: 'admin-event-list-item'))

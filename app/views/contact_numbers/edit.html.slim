@@ -1,0 +1,5 @@
+= render partial: 'info'
+
+= simple_form_for @contact_number, url: :contact_number, wrapper: :bulma do |builder|
+  = builder.input :phone
+  = builder.button :submit, class: 'button is-primary'

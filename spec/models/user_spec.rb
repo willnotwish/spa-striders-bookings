@@ -12,6 +12,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to have_one(:contact_number) }
   
   it { is_expected.not_to be_admin }
+  it { is_expected.not_to have_accepted_terms }
 
   context 'when the admin flag is true' do
     before do

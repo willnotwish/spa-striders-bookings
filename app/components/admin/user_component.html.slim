@@ -1,5 +1,5 @@
 = root do |bem|
-  = bem.element('name') { link_to_unless_current name, [:admin, user] }
+  = bem.element('name') { link_to_unless_current user_name, [:admin, user] }
   = bem.element('status') do
     = render(Admin::UserStatusComponent.new(user: user))
 

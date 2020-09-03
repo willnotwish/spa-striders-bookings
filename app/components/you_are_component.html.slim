@@ -1,6 +1,7 @@
-.you-are.level
-  .you-are__identity
-    |You are logged in as #{name} (#{email}) &nbsp;    
-    = render UserStatusBadgeComponent.new(user: user, kind: :admin)
-  .you-are__logout= button_to('Logout', :logout, method: :delete, class: 'button is-danger is-small')
-hr
+= root do |bem|
+  = bem.element :identity do
+    |You are logged in as <strong>#{user_name}</strong> (#{email}) &nbsp;    
+    - if show?(:admin_badge)
+      = render Admin::AdminBadgeComponent.new(user: user)
+  = bem.element :contact_number do
+    = render ContactNumberComponent.new(contact_number: contact_number)

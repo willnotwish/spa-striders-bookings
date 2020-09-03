@@ -1,2 +1,6 @@
-h1 Cancellations#new
-p Find me in app/views/cancellations/new.html.slim
+= render(BookingComponent.new(booking: @booking, except: :event_description))
+
+= render partial: 'info'
+
+= simple_form_for [@booking, @cancellation] do |builder|
+  = builder.button :submit, 'Cancel now', class: 'button is-danger'

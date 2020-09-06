@@ -1,0 +1,11 @@
+FROM nginx:alpine
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+WORKDIR /var/www/html
+
+# We don't need the Rails app, just the public files in the document root
+# Ensure the /book/packs directory contains the production assets:
+#   RAILS_ENV=production rails webpack:compile
+
+COPY public/ .

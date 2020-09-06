@@ -1,15 +1,11 @@
 Rails.application.routes.draw do
   direct :logout do
-    '/logout'
-  end
-
-  direct :login do
-    '/logout'
+    Rails.application.secrets.members_logout_path
   end
 
   scope '/book' do
     get 'home/index'
-    get 'login', to: redirect('/login') # redirect to members app
+    get 'login', to: redirect(Rails.application.secrets.members_login_path)
     
     resources :bookings, except: %i[new create] do
       resources :cancellations, only: %i[new create]

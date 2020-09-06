@@ -77,3 +77,6 @@ gem 'view_component'
 
 # Authorisatioon
 gem 'pundit'
+
+# Session storage
+gem 'redis-rails'

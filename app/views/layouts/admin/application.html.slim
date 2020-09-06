@@ -6,16 +6,17 @@ html
     title Spa Striders | Session Bookings Admin
     = csrf_meta_tags
     = csp_meta_tag
-    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'admin', 'data-turbolinks-track': 'reload'
   body
-    header.section
+    .section
       .container
-        = render partial: 'header'
+        = render Admin::HeaderComponent.new
     
     = render FlashComponent.new
 
-    main.section     
-      .container= yield
+    .container
+      main= yield
 
-    footer.section  
-      .container= render partial: 'footer'
+    .section
+      .container 
+        = render Admin::FooterComponent.new

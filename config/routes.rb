@@ -1,17 +1,28 @@
 Rails.application.routes.draw do
   direct :logout do
-    '/logout'
+    Rails.application.secrets.members_logout_path
   end
 
   scope '/book' do
     get 'home/index'
-    get 'login', to: redirect('/login') # redirect to members app
+    get 'login', to: redirect(Rails.application.secrets.members_login_path)
     
     resources :bookings, except: %i[new create] do
       resources :cancellations, only: %i[new create]
     end
 
     resources :self_service_bookings, only: %i[new create], path: 'self-service-bookings'
+
+    namespace :terms do
+      resource :acceptance, only: %i[new create show]
+      get 'accept', to: 'acceptances#new'
+    end
+    resource :terms, only: :show
+    resource :privacy, only: :show, controller: :privacy_policy
+
+    resources :events, only: :show
+
+    resource :contact_number, path: 'contact-number', except: :destroy
 
     namespace :admin do
       resources :events do

@@ -53,6 +53,7 @@ class Event < ApplicationRecord
     def future
       where(arel_table[:starts_at].gt(Time.now))
     end
+    alias_method :upcoming, :future
 
     def past
       where(arel_table[:starts_at].lt(Time.now))

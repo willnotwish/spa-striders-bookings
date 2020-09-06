@@ -1,0 +1,27 @@
+FROM ruby:2.7.1-alpine3.11
+
+# Install only the necessary packages +
+# build tools not needed at run time (removed below)
+RUN apk add --update --no-cache mariadb-dev tzdata nodejs && \
+  apk add git build-base
+
+# Add rails user (uid: 1001)
+RUN adduser -D -u 1001 rails 
+
+WORKDIR /app
+COPY . /app
+
+RUN chown -R rails:rails /app
+USER rails
+
+# The public directory is mounted separately (served by nginx)
+VOLUME [ "/app/public" ]
+
+# Bundle only the production gems.
+# Without the rake update task, rails thinks it needs to generate an new app.
+RUN bundle install --jobs=3 --retry=3 --without=test development && \
+  bundle exec rake app:update:bin
+  
+# Finally, remove the build tools installed as root, above
+USER root
+RUN apk del git build-base

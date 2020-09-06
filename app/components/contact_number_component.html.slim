@@ -1,4 +1,10 @@
-- if number_given?
-  .tag= phone
-- else
-  .tag.is-danger= phone
+= root do |bem|
+  - if phone.present?
+    = bem.element :label
+    = bem.element :phone do
+      span.tag.is-info= phone
+    = bem.element :change do
+        = link_to 'change', [:edit, :contact_number] 
+  - else
+    = bem.element :phone_blank do
+      .tag.is-danger= I18n.t('contact_number.phone_blank')

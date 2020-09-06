@@ -3,10 +3,14 @@ module BookingOperation
   include ActiveModel::Model
   
   included do
-    attr_accessor :user, :event
+    attr_accessor :user, :event_id
 
-    validates :user, :event, presence: true  
+    validates :user, :event_id, presence: true  
     validate :not_already_booked
+  end
+
+  def event
+    @event ||= Event.find(event_id)
   end
 
   def save
@@ -22,7 +26,7 @@ module BookingOperation
   end
 
   def build_booking
-    ::Booking.new(user: user, event: event, aasm_state: :confirmed)
+    ::Booking.new(user: user, event_id: event_id, aasm_state: :confirmed)
   end
 
   def not_already_booked

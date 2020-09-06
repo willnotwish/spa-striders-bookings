@@ -1,0 +1,21 @@
+.c-booking {
+  // background-color: lightgoldenrodyellow;
+  
+  display: grid;
+  gap: 0.25rem;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 2rem 0;
+
+  &__event-name {
+    font-weight: bolder;
+    font-size: larger;
+    grid-column: 1 / -1;
+  }
+
+  &__event-description {
+    grid-column: 1 / -1;
+    border-top: 1px solid lightgrey;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+}

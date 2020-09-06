@@ -1,0 +1,31 @@
+
+.admin-dashboard {
+  $spacing: 2rem;
+
+  // display: grid;
+  // grid-gap: 1rem;
+  // gap: 1rem;
+  // grid-template-columns: minmax(220px, 1fr) 3fr;
+  // grid-template-columns: repeat(auto-fit, minmax(220px, 1fr) 3fr);
+
+  &__title {
+    margin-bottom: $spacing;
+  }
+
+  &__nav {
+    margin-bottom: $spacing;
+  }
+
+  &__main {
+    // background-color: grey;
+  }
+}
+
+.admin-menu {
+  // display: flex;
+  // justify-content: space-between;
+  &__item {
+    display: inline-block;
+    margin-right: 2rem;
+  }
+}

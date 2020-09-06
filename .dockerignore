@@ -1,0 +1,12 @@
+.git
+.env
+.dockerignore
+.byebug-history
+.ruby-version
+Dockerfile*
+doc
+log
+tmp
+vendor/bundle
+node_modules
+storage

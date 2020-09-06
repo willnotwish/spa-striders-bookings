@@ -10,6 +10,7 @@ module Bulma
     def html_class
       classes = ['tag']
       classes << "is-#{modifier}" if modifier.present?
+      classes << 'is-light'
       classes.join(' ')
     end
   end

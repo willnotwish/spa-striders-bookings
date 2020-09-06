@@ -1,0 +1,7 @@
+h2.title New Contact Number
+
+= render partial: 'info'
+
+= simple_form_for @contact_number, url: :contact_number do |builder|
+  = builder.input :phone
+  = builder.button :submit, class: 'button is-primary'

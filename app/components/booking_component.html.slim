@@ -1,0 +1,8 @@
+= root do |bem|
+  = bem.element :event_name do
+    = link_to event_name, booking
+    = render(Bulma::TagComponent.new(text: state, modifier: confirmed? ? :success : :warning))
+  = bem.element :event_date
+  = bem.element :event_time
+  = bem.element :event_description
+

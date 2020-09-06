@@ -1,10 +1,10 @@
 = link_to root_path do
-    h1 Spa Striders Bookings
+  h1.title Spa Striders Bookings
 
 - if user_logged_in?
   = render YouAreComponent.new(user: current_user)
   = link_to 'Admin', [:admin, :root] if current_user.admin?
 - else
-  p You need to log in to use this app.
+  .notification.is-danger You need to log in to use this app
 
 

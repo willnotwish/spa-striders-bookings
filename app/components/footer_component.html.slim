@@ -1,0 +1,7 @@
+= root do |bem|
+  = bem.element(:contact_number) do
+    = render(ContactNumberComponent.new(contact_number: contact_number))
+  
+  = bem.element(:copyright)
+  = bem.element(:terms) { link_to 'Terms and Conditions', :terms }
+  = bem.element(:terms) { link_to 'Privacy', :privacy }

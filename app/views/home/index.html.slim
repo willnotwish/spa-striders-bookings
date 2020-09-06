@@ -1,11 +1,11 @@
-h1 Your bookings
+h1.title Upcoming bookings
 
 - if @bookings.empty?
   .notification.info You have no bookings yet.
 
 - else  
-  .bookings-list
-    - @bookings.each do |booking|
-      = render(BookingSummaryComponent.new(booking: booking))
+  ul.bookings-list
+    = render BookingComponent.as_list(@bookings, except: :event_description)
 
+hr
 = link_to 'Make a new booking', [:new, :self_service_booking]

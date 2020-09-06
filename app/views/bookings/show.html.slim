@@ -1,2 +1,4 @@
-h1 Bookings#show
-p Find me in app/views/bookings/show.html.slim
+= render BookingComponent.new(booking: @booking, modifiers: { event_description: 'xxx' })
+
+- if @booking.confirmed?
+  = link_to 'Cancel this booking', [:new, @booking, :cancellation]

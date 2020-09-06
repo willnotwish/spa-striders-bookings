@@ -1,4 +1,4 @@
-require "application_responder"
+require 'application_responder'
 
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   include UserAuthentication
 
   # prepend_before_action :ensure_test_user!
-  prepend_before_action :examine_session_cookie
+  # prepend_before_action :examine_session_cookie
 
   def forbidden
     head :forbidden

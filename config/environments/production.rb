@@ -109,4 +109,12 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  redis_server = {
+		host: 'redis',
+		port: 6379,
+		db: 0
+	}
+
+  config.session_store :redis_store, servers: redis_server, expires_in: 90.minutes
 end

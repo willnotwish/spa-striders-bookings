@@ -80,3 +80,5 @@ gem 'pundit'
 
 # Session storage
 gem 'redis-rails'
+
+gem 'warden'

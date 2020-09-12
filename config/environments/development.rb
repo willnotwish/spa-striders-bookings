@@ -59,4 +59,64 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Log to STDOUT is needed for Docker environments
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
+  # Use a redis session store if required. Useful to debug production setups.
+  redis_host = ENV['RAILS_REDIS_SESSION_STORE_HOST']
+  if redis_host.present?
+    redis_server = {
+      host: redis_host,
+      port: 6379,
+      db: 0
+    }    
+    config.session_store :redis_store, servers: redis_server, expires_in: 90.minutes
+
+    config.logger.info "Session storage uses redis server config: #{redis_server}"
+    config.logger.info "Configured session store: #{config.session_store}"
+  end
+
+  config.middleware.use Warden::Manager do |manager|
+    manager.default_scope = :user
+    manager.default_strategies :members
+    manager.failure_app = RedirectApp
+
+    config.logger.info "Warden::Manager in config: #{manager.inspect}"
+  end
+
+  Warden::Manager.serialize_into_session do |user|
+    Rails.logger.warn "serialize_into_session. user: #{user}"
+    user.id
+  end
+  
+  Warden::Manager.serialize_from_session do |args|
+    Rails.logger.debug "serialize_from_session. id: #{args}"
+    User.find_by(members_user_id: args.first).tap do |user|
+      Rails.logger.debug "serialized user: #{user}"
+    end
+  end
+end
+
+Warden::Strategies.add(:members) do
+  def valid?
+    # params['username'] || params['password']
+    Rails.logger.debug "Warden :members strategy valid? returning true"
+    true
+  end
+
+  def authenticate!
+    # u = User.authenticate(params['username'], params['password'])
+    # u.nil? ? fail!("Could not log in") : success!(u)
+
+    # Ordinarily we would try to authenticate a user here.
+    # But we know we can't do that - it's not our responsibility.
+    # So just bail...
+    Rails.logger.debug "Warden :members strategy authenticate! Failing..."
+    fail!('Cannot authenticate here')
+  end
 end

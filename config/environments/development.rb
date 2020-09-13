@@ -59,4 +59,33 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Log to STDOUT is needed for Docker environments
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
+
+  # Use a redis session store if required. Useful to debug production setups.
+  redis_host = ENV['RAILS_REDIS_SESSION_STORE_HOST']
+  if redis_host.present?
+    redis_server = {
+      host: redis_host,
+      port: 6379,
+      db: 0
+    }    
+    config.session_store :redis_store, servers: redis_server, expires_in: 90.minutes
+
+    config.logger.info "Session storage uses redis server config: #{redis_server}"
+    config.logger.info "Configured session store: #{config.session_store}"
+  end
+
+  config.middleware.use Warden::Manager do |manager|
+    manager.default_scope = :user
+    manager.failure_app = RedirectApp
+    manager.serialize_from_session do |args|
+      User.find_by(members_user_id: args.first)
+    end
+  end
 end

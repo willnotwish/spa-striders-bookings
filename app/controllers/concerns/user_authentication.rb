@@ -3,38 +3,30 @@ module UserAuthentication
 
   included do
     helper_method :current_user, :user_logged_in?
-
     before_action :authenticate_user!
   end
   
   private
 
   def authenticate_user!
-    logger.debug "authenticate_user! About to call warden.authenticate!"
     warden.authenticate!
   end
 
   def current_user
-    @current_user ||= begin
-      logger.debug "authenticate_user About to call warden.authenticate"
-      warden.authenticate
-    end
+    @current_user ||= warden.authenticate
   end
 
   def user_logged_in?
     !!current_user
   end
 
-  # def user_session
-  #   current_user && warden.session(:user)
-  # end
-
   def warden
-    request.env['warden'].tap do |w|
-      logger.debug "Warden: #{w}"
-    end
+    request.env['warden']
   end
 end
+
+# Leave this here for a while as a reminder.
+# This is how devise does it...
 
 # def authenticate_#{mapping}!(opts={})
 #   opts[:scope] = :#{mapping}

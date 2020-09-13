@@ -110,11 +110,25 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
-  redis_server = {
-		host: 'redis',
-		port: 6379,
-		db: 0
-	}
+  # Use a redis session store if required. Useful to debug production setups.
+  redis_host = ENV['RAILS_REDIS_SESSION_STORE_HOST']
+  if redis_host.present?
+    redis_server = {
+      host: redis_host,
+      port: 6379,
+      db: 0
+    }    
+    config.session_store :redis_store, servers: redis_server, expires_in: 90.minutes
 
-  config.session_store :redis_store, servers: redis_server, expires_in: 90.minutes
+    config.logger.info "Session storage uses redis server config: #{redis_server}"
+    config.logger.info "Configured session store: #{config.session_store}"
+  end
+
+  config.middleware.use Warden::Manager do |manager|
+    manager.default_scope = :user
+    manager.failure_app = RedirectApp
+    manager.serialize_from_session do |args|
+      User.find_by(members_user_id: args.first)
+    end
+  end
 end

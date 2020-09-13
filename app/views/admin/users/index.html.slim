@@ -5,4 +5,4 @@ section.main-content__section
     .notification.info There are no users yet.
   - else  
     ul.admin-user-list
-      = render(Admin::UserComponent.with_collection(@users, root_class: 'admin-user-list-item', root_tag: :li, except: :bookings ))
+      = render(Admin::UserComponent.with_collection(@users, root_class: 'admin-user-list-item', root_tag: :li, except: %i[bookings status] ))

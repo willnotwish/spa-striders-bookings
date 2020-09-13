@@ -1,18 +1,19 @@
 = root do |bem|
-  = bem.element('name') { link_to_unless_current user_name, [:admin, user] }
-  = bem.element('status') do
+  = bem.element :user_name do
+    = render(Admin::UserNameComponent.new(user: user)) 
+    
+  = bem.element :status do
     = render(Admin::UserStatusComponent.new(user: user))
 
-  = bem.element('email') { email }
-  = bem.element('phone') do
-    = render(ContactNumberComponent.new(contact_number: contact_number))
+  = bem.element :email
 
-  - if show_booking_stats?
-    = bem.element('booking-stats') do
-      = render(Admin::UserBookingStatsComponent.new(user: user))
+  = bem.element :phone do
+    = render(ContactNumberComponent.new(contact_number: contact_number, except: %i[label change]))
 
-  - if show_bookings? && user.bookings.present?
-    = bem.element('bookings') do
-      = render(Bulma::TitleComponent.new(text: 'Bookings', kind: 'subtitle', size: 4))
-      ul.admin-user-bookings
-        = render(Admin::BookingComponent.as_list(bookings, except: :user, root_class: 'admin-user-bookings-list-item'))
+  = bem.element :booking_stats  do
+    = render(Admin::UserBookingStatsComponent.new(user: user))
+
+  = bem.element :bookings do
+    = render(Bulma::TitleComponent.new(text: 'Bookings', kind: 'subtitle', size: 4))
+    ul.admin-user-bookings
+      = render(Admin::BookingComponent.as_list(bookings, except: :user, root_class: 'admin-user-bookings-list-item'))

@@ -5,24 +5,20 @@
   padding: 0;
 
   >:nth-child(odd) {
-    background-color: lightgray;
+    // background-color: lightgray;
   }
 }
 
 .admin-user-list-item {
   display: grid;
   gap: 1rem;
-  grid-template-columns: 2fr 1fr 3fr 2fr;
+  grid-template-columns: 2fr repeat(4, 1fr);
   grid-template-rows: 1fr 2fr;
   padding: 1rem 0;
 
   &__name {
     // grid-column: 1 / 3;
     padding-left: 1rem;
-  }
-
-  &__booking-stats {
-    grid-column: 1 / -1;
   }
 }
 
@@ -50,4 +46,18 @@
   gap: 0.5rem;
   grid-template-columns: 1fr 1fr 1fr;
 
+}
+
+.c-admin-user-name {
+  display: flex;
+  // justify-content: space-between;
+  > * {
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+
+  &__user-name {
+    font-weight: 800;
+    font-size: larger;
+  }
 }

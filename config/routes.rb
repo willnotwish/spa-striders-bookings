@@ -46,7 +46,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :users, only: %i[index show]
+      resources :users, only: %i[index show edit update]
 
       resource :dashboard, only: :show
       root to: 'dashboard#show'

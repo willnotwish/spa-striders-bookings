@@ -1,2 +1,5 @@
-h1 Admin::Users#edit
-p Find me in app/views/admin/users/edit.html.slim
+h2.title Edit user
+
+= simple_form_for [:admin, @user] do |builder|
+  = builder.input :admin
+  = builder.button :submit, class: 'button is-primary'

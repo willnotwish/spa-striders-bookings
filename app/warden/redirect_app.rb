@@ -1,10 +1,8 @@
 class RedirectApp < ActionController::Metal
   include ActionController::Redirecting
+  include Devise::Controllers::StoreLocation
 
-  # def self.call(env)
-  #   Rails.logger.debug "RedirectApp.call"
-  #   redirect_to '/login'
-  # end
+  delegate :flash, to: :request
 
   def self.call(env)
     Rails.logger.debug "RedirectApp.call"
@@ -66,7 +64,7 @@ class RedirectApp < ActionController::Metal
   # end
 
   def redirect
-    # store_location!
+    store_location!
     # if is_flashing_format?
     #   if flash[:timedout] && flash[:alert]
     #     flash.keep(:timedout)
@@ -75,6 +73,7 @@ class RedirectApp < ActionController::Metal
     #     flash[:alert] = i18n_message
     #   end
     # end
+    flash[:alert] = 'You need to log in'
     redirect_to redirect_url
   end
 
@@ -82,5 +81,37 @@ class RedirectApp < ActionController::Metal
 
   def redirect_url
     '/login'
+  end
+
+  def warden
+    request.respond_to?(:get_header) ? request.get_header("warden") : request.env["warden"]
+  end
+
+  def warden_options
+    request.respond_to?(:get_header) ? request.get_header("warden.options") : request.env["warden.options"]
+  end
+
+  def warden_message
+    @message ||= warden.message || warden_options[:message]
+  end
+
+  def scope
+    @scope ||= warden_options[:scope] || :user
+  end
+
+  # def scope_class
+  #   @scope_class ||= Devise.mappings[scope].to
+  # end
+
+  def attempted_path
+    warden_options[:attempted_path]
+  end
+
+  # Stores requested URI to redirect the user after signing in. We can't use
+  # the scoped session provided by warden here, since the user is not
+  # authenticated yet, but we still need to store the URI based on scope, so
+  # different scopes would never use the same URI to redirect.
+  def store_location!
+    store_location_for(scope, attempted_path) if request.get?
   end
 end

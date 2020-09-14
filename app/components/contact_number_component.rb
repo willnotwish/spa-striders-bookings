@@ -1,11 +1,11 @@
 class ContactNumberComponent < ApplicationComponent
   attr_reader :contact_number
 
-  delegate :phone, to: :contact_number
+  delegate :phone, to: :contact_number, allow_nil: true
   delegate :present?, to: :phone
 
-  def initialize(contact_number:, except: [])
-    super(root_class: 'c-contact-number', except: except)
+  def initialize(contact_number:, except: [], root_class: 'c-contact-number')
+    super(root_class: root_class, except: except)
     @contact_number = contact_number
   end
 
@@ -15,6 +15,5 @@ class ContactNumberComponent < ApplicationComponent
 
   def label
     I18n.t('contact_number.test_and_trace_label')
-    # "Contact number for NHS Test & Trace"
   end
 end

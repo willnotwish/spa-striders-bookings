@@ -1,7 +1,7 @@
-h2.title New Contact Number
+h2.title Add Contact Number
 
 = render partial: 'info'
 
-= simple_form_for @contact_number, url: :contact_number do |builder|
+= simple_form_for @contact_number, url: :contact_number, wrapper: :bulma do |builder|
   = builder.input :phone
-  = builder.button :submit, class: 'button is-primary'
+  = builder.button :submit, 'Add number', class: 'button is-primary'

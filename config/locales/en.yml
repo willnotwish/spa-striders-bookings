@@ -39,8 +39,9 @@ en:
 
   contact_number:
     test_and_trace_label: Test & Trace number
-    test_and_trace_info: You need to provide a phone number you can be contacted on.
-      Your number will only be used for NHS Test & Trace purposes, nothing else.
+    test_and_trace_info: In order to make bookings, you have to provide a valid contact number.
+      It's used only for NHS Test & Trace purposes, nothing else.
+    phone_blank: NHS Test & Trace number is missing
 
   copyright: © Spa Striders 2020
   time:

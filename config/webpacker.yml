@@ -50,7 +50,9 @@ default: &default
 
 development:
   <<: *default
-  compile: true
+  
+  # Don't compile because we use the dev server
+  compile: false
 
   # Verifies that correct packages and versions are installed by inspecting package.json, yarn.lock, and node_modules
   check_yarn_integrity: true
@@ -61,7 +63,7 @@ development:
     host: localhost
     port: 3035
     public: localhost:3035
-    hmr: false
+    hmr: true
     # Inline should be set to true if using HMR
     inline: true
     overlay: true
@@ -93,4 +95,8 @@ production:
   extract_css: true
 
   # Cache manifest.json for performance
-  cache_manifest: true
+  # When wer are *really* in production we want this:
+  # cache_manifest: true
+
+  # But for now, in order to recognise new deployments immediately, we need
+  cache_manifest: false

@@ -80,7 +80,7 @@ class RedirectApp < ActionController::Metal
   private
 
   def redirect_url
-    '/login'
+    Rails.application.secrets.members_login_path
   end
 
   def warden

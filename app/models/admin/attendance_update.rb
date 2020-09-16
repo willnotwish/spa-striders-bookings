@@ -27,5 +27,9 @@ module Admin
         confirmed_booking.update(honoured_at: timestamp, honoured_by: user)
       end
     end
+
+    def booking_label(booking)
+      Admin::UserComponent.new(user: booking.user).user_name
+    end
   end
 end

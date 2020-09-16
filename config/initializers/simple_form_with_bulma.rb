@@ -40,17 +40,4 @@ SimpleForm.setup do |config|
     end
     b.optional :hint, wrap_with: { tag: 'p', class: 'help' }
   end
-
-  config.wrappers :bulma_checkbox, tag: 'div', class: 'field', error_class: 'has-error' do |b|
-    b.use :placeholder
-    b.optional :maxlength
-    b.optional :pattern
-    b.optional :min_max
-    b.optional :readonly
-    b.use :label, class: 'checkbox'
-    b.wrapper tag: 'div', class: 'control' do |bc|
-      bc.use :input, class: 'input'
-    end
-    b.optional :hint, wrap_with: { tag: 'p', class: 'help' }
-  end
 end

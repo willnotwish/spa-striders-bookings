@@ -29,5 +29,9 @@ class Booking < ApplicationRecord
     def within(period)
       joins(:event).merge Event.within(period)
     end
+
+    def honoured
+      where.not(honoured_at: nil)
+    end
   end
 end

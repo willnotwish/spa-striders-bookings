@@ -1,0 +1,9 @@
+h2.title Record attendance
+h3.subtitle= link_to @event.name, [:admin, @event]
+h3.subtitle= @event.starts_at.to_date
+
+/ = debug "Event is: #{@attendance_update.inspect}"
+
+= simple_form_for @update, url: admin_event_attendance_updates_path(@event) do |builder|
+  = builder.input :honoured_booking_ids, collection: @update.confirmed_bookings, label_method: ->(booking) { "#{booking.user.first_name} #{booking.user.last_name}" }, label: 'Attendees', as: :check_boxes
+  = builder.button :submit, 'Update', class: 'button is-primary'

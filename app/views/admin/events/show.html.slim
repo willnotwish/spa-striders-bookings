@@ -1,5 +1,7 @@
 = render(Admin::EventComponent.new(event: @event, except: :bookings, root_class: 'admin-event-detail'))
 = link_to 'Edit', [:edit, :admin, @event]
+br
+= link_to 'Record attendance', [:new, :admin, @event, :attendance_update]
 hr
 = render Admin::EventTransitionButtonsComponent.new(event: @event)
 hr

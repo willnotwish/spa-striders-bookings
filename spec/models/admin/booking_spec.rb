@@ -9,7 +9,7 @@ RSpec.describe Admin::Booking, type: :model do
 
   before do
     booking.user = steve_runner  
-    booking.event = hills
+    booking.event_id = hills&.id
     booking.current_user = doug
   end
 

@@ -1,0 +1,7 @@
+h2.title Record attendance
+h3.subtitle= link_to @event.name, [:admin, @event]
+h3.subtitle= @event.starts_at.to_s(:long)
+
+= simple_form_for @update, url: admin_event_attendance_updates_path(@event), wrapper: :bulma do |builder|
+  = builder.collection_check_boxes :honoured_booking_ids, @update.confirmed_bookings, :id, ->(booking) { @update.booking_label(booking) }, item_wrapper_tag: :div, item_wrapper_class: 'field'
+  = builder.button :submit, 'Update', class: 'button is-primary'

@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
   has_many :bookings
   has_many :confirmed_bookings, -> { confirmed }, class_name: 'Booking'
+  has_many :honoured_bookings, -> { honoured }, class_name: 'Booking'
 
   enum aasm_state: {
     draft:      10,

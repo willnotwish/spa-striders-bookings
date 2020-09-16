@@ -44,6 +44,8 @@ Rails.application.routes.draw do
         resources :bookings do
           resources :cancellations, shallow: true
         end
+
+        resources :attendance_updates, only: %i[new create]
       end
 
       resources :users, only: %i[index show edit update]

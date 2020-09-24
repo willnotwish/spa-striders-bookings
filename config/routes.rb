@@ -8,9 +8,21 @@ Rails.application.routes.draw do
     get 'login', to: redirect(Rails.application.secrets.members_login_path)
     
     resources :bookings, except: %i[new create] do
-      resources :cancellations, only: %i[new create]
+      # Note the module 'booking'. This namespaces only the controller.
+      # Do this because the corresponding model is Booking::Confirmation.
+      # Makes the controllers easier to write (I hope)
+      with_options module: :bookings, only: %i[new create] do
+        resources :cancellations
+        resources :confirmations
+        # resources :reinstatements
+      end
+      # Shortcuts which look better in the browser
+      get 'cancel'  => 'booking/cancellations#new'
+      get 'confirm' => 'booking/confirmations#new'
+      # get 'reinstate' => 'booking/reinstatements#new'
     end
 
+    resources :events, only: :show
     resources :self_service_bookings, only: %i[new create], path: 'self-service-bookings'
 
     namespace :terms do
@@ -19,9 +31,6 @@ Rails.application.routes.draw do
     end
     resource :terms, only: :show
     resource :privacy, only: :show, controller: :privacy_policy
-
-    resources :events, only: :show
-
     resource :contact_number, path: 'contact-number', except: :destroy
 
     namespace :admin do
@@ -46,6 +55,12 @@ Rails.application.routes.draw do
         end
 
         resources :attendance_updates, only: %i[new create]
+
+        resources :ballots, shallow: true do
+          resources :draws, module: :ballot, except: %i[edit update destroy]
+          # get 'draw' => 'ballot/draws#new'
+        end
+        resources :ballots, only: :index
       end
 
       resources :users, only: %i[index show edit update]

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Cancellation, type: :model do
+RSpec.describe Bookings::Cancellation, type: :model do
   let(:steve_runner) { FactoryBot.create(:user) }
   let(:hills) { FactoryBot.create(:event, starts_at: 1.week.from_now) }
   let(:booking) do
@@ -32,6 +32,14 @@ RSpec.describe Cancellation, type: :model do
 
     it "saving cancels the booking" do
       expect { cancellation.save }.to change { booking.cancelled? }.from(false).to(true)
+    end
+
+    it "saving changes the number of booking transitions by 1" do
+      expect { cancellation.save }.to change { booking.transitions.count }.by(1)
+    end
+
+    it "saving changes the number of sent emails by 1" do
+      expect { cancellation.save }.to change { ActionMailer::Base.deliveries.count }.by(1)
     end
   end
 

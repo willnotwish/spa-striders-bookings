@@ -14,8 +14,10 @@ RSpec.describe Admin::Booking, type: :model do
   end
 
   it { is_expected.to validate_presence_of(:user) }
-  it { is_expected.to validate_presence_of(:event) }
+  it { is_expected.to validate_presence_of(:event_id) }
   it { is_expected.to validate_presence_of(:current_user) }
+
+  # it { is_expected.to have_many(:booking_events) }
 
   context 'for an empty hills session starting next week' do
     let(:hills) { FactoryBot.create(:event, starts_at: 1.week.from_now) }

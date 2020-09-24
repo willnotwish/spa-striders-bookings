@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_29_191333) do
+ActiveRecord::Schema.define(version: 2020_09_24_105428) do
+
+  create_table "ballot_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "ballot_id", null: false
+    t.integer "result"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ballot_id"], name: "index_ballot_entries_on_ballot_id"
+    t.index ["user_id"], name: "index_ballot_entries_on_user_id"
+  end
+
+  create_table "ballots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.integer "size"
+    t.timestamp "opens_at"
+    t.timestamp "closes_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_ballots_on_event_id"
+  end
 
   create_table "bookings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "event_id", null: false
@@ -24,8 +44,21 @@ ActiveRecord::Schema.define(version: 2020_08_29_191333) do
     t.timestamp "honoured_at"
     t.bigint "honoured_by_id"
     t.bigint "made_by_id"
+    t.timestamp "expires_at"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
+  create_table "bookings_transitions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "booking_id", null: false
+    t.string "from_state"
+    t.string "to_state"
+    t.string "source_type"
+    t.bigint "source_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["booking_id"], name: "index_bookings_transitions_on_booking_id"
+    t.index ["source_type", "source_id"], name: "index_bookings_transitions_on_source_type_and_source_id"
   end
 
   create_table "contact_numbers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -62,7 +95,11 @@ ActiveRecord::Schema.define(version: 2020_08_29_191333) do
     t.index ["members_user_id"], name: "index_users_on_members_user_id", unique: true
   end
 
+  add_foreign_key "ballot_entries", "ballots"
+  add_foreign_key "ballot_entries", "users"
+  add_foreign_key "ballots", "events"
   add_foreign_key "bookings", "events"
   add_foreign_key "bookings", "users"
+  add_foreign_key "bookings_transitions", "bookings"
   add_foreign_key "contact_numbers", "users"
 end

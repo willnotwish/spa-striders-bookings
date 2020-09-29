@@ -10,15 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_24_105428) do
+ActiveRecord::Schema.define(version: 2020_09_25_184208) do
 
   create_table "ballot_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "ballot_id", null: false
-    t.integer "result"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "booking_id"
     t.index ["ballot_id"], name: "index_ballot_entries_on_ballot_id"
+    t.index ["booking_id"], name: "index_ballot_entries_on_booking_id"
     t.index ["user_id"], name: "index_ballot_entries_on_user_id"
   end
 
@@ -29,6 +30,8 @@ ActiveRecord::Schema.define(version: 2020_09_24_105428) do
     t.timestamp "closes_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "aasm_state"
+    t.text "rules"
     t.index ["event_id"], name: "index_ballots_on_event_id"
   end
 
@@ -95,6 +98,25 @@ ActiveRecord::Schema.define(version: 2020_09_24_105428) do
     t.index ["members_user_id"], name: "index_users_on_members_user_id", unique: true
   end
 
+  create_table "waiting_list_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "waiting_list_id", null: false
+    t.text "notes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_waiting_list_entries_on_user_id"
+    t.index ["waiting_list_id"], name: "index_waiting_list_entries_on_waiting_list_id"
+  end
+
+  create_table "waiting_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.integer "size"
+    t.integer "aasm_state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_waiting_lists_on_event_id"
+  end
+
   add_foreign_key "ballot_entries", "ballots"
   add_foreign_key "ballot_entries", "users"
   add_foreign_key "ballots", "events"
@@ -102,4 +124,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_105428) do
   add_foreign_key "bookings", "users"
   add_foreign_key "bookings_transitions", "bookings"
   add_foreign_key "contact_numbers", "users"
+  add_foreign_key "waiting_list_entries", "users"
+  add_foreign_key "waiting_list_entries", "waiting_lists"
+  add_foreign_key "waiting_lists", "events"
 end

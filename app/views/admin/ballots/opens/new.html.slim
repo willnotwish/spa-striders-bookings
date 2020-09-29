@@ -1,0 +1,13 @@
+h2.title 
+  'Open Ballot
+  span.is-5 = link_to 'cancel', [:admin, @ballot]
+
+hr
+
+h3.subtitle Event Details
+= render Admin::EventComponent.new(event: @ballot.event)
+
+hr
+
+= simple_form_for @open, url: [:admin, @ballot, :opens] do |builder|
+  = builder.button :submit, 'Open the ballot now', class: 'button is-primary'

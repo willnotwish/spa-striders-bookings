@@ -1,0 +1,10 @@
+= root do |bem|
+  - if show?(:event)
+    = bem.element :event_name
+    = bem.element :event_starts_at_date
+    = bem.element :event_starts_at_time
+  = bem.element :status do
+    = render Ballots::StatusComponent.new(ballot: ballot)
+  = bem.element :entry_count, "#{entry_count} entries"
+  / = bem.element :entries do
+  /   = render Ballots::EntryComponent.as_list(ballot.ballot_entries)

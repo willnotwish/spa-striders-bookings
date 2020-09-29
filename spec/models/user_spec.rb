@@ -9,6 +9,9 @@ RSpec.describe User, type: :model do
   it { is_expected.to validate_uniqueness_of(:members_user_id) }
   it { is_expected.to have_many(:bookings) }
   it { is_expected.to have_many(:events).through(:bookings) }
+  it { is_expected.to have_many(:provisional_bookings) }
+  it { is_expected.to have_many(:ballot_entries) }
+  it { is_expected.to have_many(:ballots).through(:ballot_entries) }
   it { is_expected.to have_one(:contact_number) }
   
   it { is_expected.not_to be_admin }

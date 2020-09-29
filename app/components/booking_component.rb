@@ -7,7 +7,7 @@ class BookingComponent < ApplicationComponent
 
   attr_reader :booking
   
-  delegate :event, :confirmed?, :cancelled?, to: :booking  
+  delegate :event, :confirmed?, :cancelled?, :aasm_state, to: :booking  
   delegate :name, :description, to: :event, prefix: :event
 
   def initialize(booking:, except: [], modifiers: {}, root_class: 'c-booking', root_tag: :div)
@@ -16,6 +16,6 @@ class BookingComponent < ApplicationComponent
   end
 
   def state
-    booking.aasm_state
+    aasm_state
   end
 end

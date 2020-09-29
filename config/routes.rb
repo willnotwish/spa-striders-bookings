@@ -57,15 +57,18 @@ Rails.application.routes.draw do
         resources :attendance_updates, only: %i[new create]
 
         resources :ballots, shallow: true do
-          resources :draws, module: :ballot, except: %i[edit update destroy]
-          # get 'draw' => 'ballot/draws#new'
+          with_options module: :ballots, only: %i[new create] do
+            resources :draws
+            resources :opens
+            resources :closes
+          end
         end
-        resources :ballots, only: :index
       end
 
+      resources :ballots, only: :index
       resources :users, only: %i[index show edit update]
-
       resource :dashboard, only: :show
+      
       root to: 'dashboard#show'
     end
 

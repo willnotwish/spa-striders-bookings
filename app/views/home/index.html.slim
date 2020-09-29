@@ -8,4 +8,15 @@ h1.title Upcoming bookings
     = render BookingComponent.as_list(@bookings, except: :event_description)
 
 hr
+h2.title Upcoming events
+- if @events.empty?
+  .notification.info There are no upcoming events at this time. Please try again later.
+
+- else  
+  ul.bookings-list
+    = render EventComponent.as_list(@events, except: :event_description)
+
+
+
+hr
 = link_to 'Make a new booking', [:new, :self_service_booking]

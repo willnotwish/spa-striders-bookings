@@ -1,0 +1,10 @@
+h2.title New Ballot
+
+h3.subtitle = link_to @event.name, [:admin, @event]
+
+= simple_form_for [:admin, @event, @ballot] do |builder|
+  = builder.input :opens_at
+  = builder.input :closes_at
+  = builder.input :size
+  = builder.input :rules
+  = builder.button :submit, class: 'button is-primary'

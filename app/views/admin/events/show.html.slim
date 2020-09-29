@@ -1,10 +1,20 @@
-= render(Admin::EventComponent.new(event: @event, except: :bookings, root_class: 'admin-event-detail'))
-= link_to 'Edit', [:edit, :admin, @event]
-br
-= link_to 'Record attendance', [:new, :admin, @event, :attendance_update]
-hr
+= render Admin::EventComponent.new(event: @event, except: :bookings, root_class: 'admin-event-detail')
 = render Admin::EventTransitionButtonsComponent.new(event: @event)
+
+= link_to 'Edit', [:edit, :admin, @event]
+
 hr
-h3.subtitle Bookings
+
+= link_to 'Attendance', [:new, :admin, @event, :attendance_update]
+
+hr
+
+h3.subtitle = link_to 'Ballots', [:admin, @event, :ballots]
+ul.event-ballots-list
+  = render Ballots::OverviewComponent.as_list(@event.ballots, except: :event, root_class: 'event-ballot-list-item')
+
+hr
+
+h3.subtitle = link_to 'Bookings', [:admin, @event, :bookings]
 ul.event-booking-list
   = render Admin::BookingComponent.with_collection(@event.bookings, except: :event, root_class: 'event-booking-list-item', root_tag: 'li')

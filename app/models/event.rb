@@ -8,6 +8,7 @@ class Event < ApplicationRecord
   end
 
   has_many :ballots
+  has_one :waiting_list
   
   enum aasm_state: {
     draft:      10,
@@ -45,7 +46,7 @@ class Event < ApplicationRecord
   def full?
     return false if capacity.blank?
 
-    confirmed_bookings.count >= capacity
+    provisional_or_confirmed_bookings.count >= capacity
   end
 
   def future?

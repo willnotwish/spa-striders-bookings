@@ -1,0 +1,6 @@
+h2.title Ballot
+h3.subtitle = link_to @event.name, [:admin, @event]
+
+= render Ballots::OverviewComponent.new(ballot: @ballot, except: %i[event_name])
+hr
+= render Ballots::StateMachineEventsComponent.new(ballot: @ballot)

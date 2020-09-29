@@ -8,12 +8,17 @@ class User < ApplicationRecord
   has_many :confirmed_bookings, -> { confirmed }, class_name: 'Booking'
   has_many :confirmed_events, through: :confirmed_bookings, source: :event
 
+  has_many :provisional_bookings, -> { provisional }, class_name: 'Booking'
+
   has_many :provisional_or_confirmed_bookings, -> { provisional_or_confirmed }, class_name: 'Booking'
   has_many :provisional_or_confirmed_events, through: :provisional_or_confirmed_bookings, source: :event
 
   has_many :cancelled_bookings, -> { cancelled }, class_name: 'Booking'
 
   has_one :contact_number
+  
+  has_many :ballot_entries
+  has_many :ballots, through: :ballot_entries
 
   delegate :phone, to: :contact_number, allow_nil: true
 

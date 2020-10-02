@@ -2,33 +2,19 @@ module Ballots
   class Open
     include ActiveModel::Model
 
-    attr_accessor :ballot, :current_user
-    validates :ballot, presence: true
+    attr_reader :ballot
+    attr_accessor :current_user
 
-    validate :may_open
+    validates :ballot, presence: true, may_fire_event: { event: :open }
+
+    def ballot=(ballot)
+      @ballot = ballot ? StateMachine.new(ballot) : nil
+    end
 
     def save
       return false if invalid?
       
-      state_machine.open(current_user)
-    end
-
-    private
-
-    def state_machine
-      @state_machine ||= StateMachine.new(ballot)      
-    end
-
-    def may_open
-      return unless ballot
-
-      state_machine.may_open?(current_user)
-    end
-
-    class << self
-      def create(attrs)
-        new(attrs).tap { |instance| instance.save }
-      end
+      ballot.open(current_user)
     end
   end
 end

@@ -52,7 +52,7 @@ Rails.application.configure do
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
-  config.log_level = :info
+  config.log_level = :debug
 
   config.active_job.queue_adapter = :inline
 end

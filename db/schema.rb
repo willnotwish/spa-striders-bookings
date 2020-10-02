@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_25_184208) do
+ActiveRecord::Schema.define(version: 2020_09_30_102531) do
 
   create_table "ballot_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -72,6 +72,15 @@ ActiveRecord::Schema.define(version: 2020_09_25_184208) do
     t.index ["user_id"], name: "index_contact_numbers_on_user_id"
   end
 
+  create_table "event_admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_event_admins_on_event_id"
+    t.index ["user_id"], name: "index_event_admins_on_user_id"
+  end
+
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -124,6 +133,8 @@ ActiveRecord::Schema.define(version: 2020_09_25_184208) do
   add_foreign_key "bookings", "users"
   add_foreign_key "bookings_transitions", "bookings"
   add_foreign_key "contact_numbers", "users"
+  add_foreign_key "event_admins", "events"
+  add_foreign_key "event_admins", "users"
   add_foreign_key "waiting_list_entries", "users"
   add_foreign_key "waiting_list_entries", "waiting_lists"
   add_foreign_key "waiting_lists", "events"

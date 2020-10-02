@@ -1,10 +1,13 @@
 class Ballot < ApplicationRecord
   belongs_to :event
   
-  has_many :ballot_entries
-  has_many :successful_entries, -> { successful }, class_name: 'BallotEntry'
-  has_many :unsuccessful_entries, -> { unsuccessful }, class_name: 'BallotEntry'
+  has_many :ballot_entries, autosave: true
   has_many :users, through: :ballot_entries
+
+  with_options class_name: 'BallotEntry' do
+    has_many :successful_entries, -> { successful }
+    has_many :unsuccessful_entries, -> { unsuccessful }
+  end
 
   validates :opens_at, :closes_at, presence: true
 

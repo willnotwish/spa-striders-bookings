@@ -25,11 +25,11 @@ module Admin
       end
 
       def build_resource
-        attrs = open_params.merge(ballot: @ballot, current_user: current_user)
+        attrs = permitted_params.merge(ballot: @ballot, current_user: current_user)
         @open = ::Ballots::Open.new attrs
       end
 
-      def open_params
+      def permitted_params
         params.fetch(:ballot_open, {}).permit()
       end
     end

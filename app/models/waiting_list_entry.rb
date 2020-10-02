@@ -4,4 +4,3 @@ class WaitingListEntry < ApplicationRecord
 
   delegate :event, to: :waiting_list
 end
-v

@@ -1,16 +1,14 @@
 class BallotEntry < ApplicationRecord
   belongs_to :user
   belongs_to :ballot
-  belongs_to :booking, optional: true
-
-  delegate :event, to: :ballot
+  belongs_to :booking, optional: true, autosave: true
 
   def successful?
     booking.present?
   end
 
   def unsuccessful?
-    booking.blank?
+    !successful?
   end
 
   class << self

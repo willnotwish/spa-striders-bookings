@@ -1,5 +1,6 @@
 class Event < ApplicationRecord
   has_many :bookings
+  has_many :booked_users, through: :bookings, source: :user
 
   with_options class_name: 'Booking' do
     has_many :confirmed_bookings, -> { confirmed }
@@ -9,6 +10,9 @@ class Event < ApplicationRecord
 
   has_many :ballots
   has_one :waiting_list
+
+  has_many :event_admins
+  has_many :event_admin_users, through: :event_admins, source: :user
   
   enum aasm_state: {
     draft:      10,

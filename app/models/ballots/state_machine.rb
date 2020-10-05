@@ -2,14 +2,12 @@ module Ballots
   class StateMachine
     include AASM
 
-    attr_reader :ballot, :pending_notifications
+    # attr_reader :ballot, :pending_notifications
 
     aasm do
       state :closed, initial: true
       state :opened
       state :drawn
-
-      # TODO. Move guards into Aasm namespace (should be AASM, maybe)
 
       event :open, guard: [AuthorizedToOpenGuard, EventNotStartedGuard] do
         transitions from: :closed, to: :opened
@@ -25,30 +23,36 @@ module Ballots
                            NoDuplicateEntriesGuard] do
         transitions from:  :closed, 
                     to:    :drawn, 
-                    after: [Aasm::DrawAction, Aasm::NotifySuccessfulEntrantsAction]
+                    after: DrawService
       end
 
-      after_all_events :persist_ballot!, :enqueue_pending_notifications!
+      # after_all_events :persist_ballot!, :enqueue_pending_notifications!
     end
 
-    def initialize(ballot)
-      @ballot = ballot
-      aasm.current_state = ballot.aasm_state.to_sym
-      @pending_notifications = []
+    def initialize(state)
+      # @ballot = ballot
+      aasm.current_state = state.to_sym
+      # @pending_notifications = []
     end
 
-    private
+    # def initialize(ballot)
+    #   @ballot = ballot
+    #   aasm.current_state = ballot.aasm_state.to_sym
+    #   # @pending_notifications = []
+    # end
 
-    # Before/after callbacks
-    def persist_ballot!
-      # Saves not only the ballot status but also any new bookings and
-      # updated ballot entries
-      ballot.update! aasm_state: aasm.to_state
-    end
+    # private
 
-    def enqueue_pending_notifications!
-      pending_notifications.each(&:deliver_later)
-      pending_notifications.clear
-    end
+    # # Before/after callbacks
+    # def persist_ballot!
+    #   # Saves not only the ballot status but also any new bookings and
+    #   # updated ballot entries
+    #   ballot.update! aasm_state: aasm.to_state
+    # end
+
+    # def enqueue_pending_notifications!
+    #   pending_notifications.each(&:deliver_later)
+    #   pending_notifications.clear
+    # end
   end
 end

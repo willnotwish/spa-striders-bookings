@@ -1,32 +1,31 @@
 class EventComponent < ApplicationComponent
-  attr_reader :event,
-              :title,
-              :date,
-              :time,
-              :state,
-              :capacity,
-              :bookings
+  include EventTiming
+  include EventNaming
 
-  def initialize(event:)
+  attr_reader :event
+
+  delegate :capacity, :bookings, :ballots, to: :event
+
+  def initialize(event:, except: [], modifiers: {}, root_class: 'c-event', root_tag: :div)
+    super(except: except, modifiers: modifiers, root_class: root_class, root_tag: root_tag)
     @event = event
-    @title = event.name
-    @date = I18n.l(event.starts_at, format: :date)
-    @time = I18n.l(event.starts_at, format: :hm)
-    @state = event.aasm_state
-    @capacity = event.capacity || 'unlimited'
-    @bookings = event.confirmed_bookings
   end
 
   def bookings_count
-    @bookings_count ||= event.confirmed_bookings.count
+    @bookings_count ||= bookings.count
   end
 
-  def booking_progress
-    "#{bookings_count} of #{capacity} bookings"
+  def ballot_overview
+    render Ballots::OverviewComponent.new(ballot: last_ballot, except: :event)
   end
-  alias_method :progress, :booking_progress
 
-  def root_class
-    'event'
+  def ballot_status
+    render Ballots::StatusComponent.new(ballot: last_ballot)
+  end
+
+  private
+
+  def last_ballot
+    @ballot ||= ballots.last
   end
 end

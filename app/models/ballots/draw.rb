@@ -2,26 +2,32 @@ module Ballots
   class Draw
     include ActiveModel::Model
 
-    attr_accessor :ballot, :current_user
-    validates :ballot, presence: true
-    validate :may_draw
+    attr_accessor :ballot, :current_user, :notify_winners
+
+    validates :ballot, presence: true, may_fire_event: { event: :draw }
 
     def save
       return false if invalid?
       
-      state_machine.draw(current_user)
+      new_bookings = draw_ballot!
+      notify_successful_entrants(new_bookings) if notify_winners
+      true
     end
 
     private
 
-    def state_machine
-      @state_machine ||= StateMachine.new(ballot)      
+    def draw_ballot!
+      bookings = []
+      ballot.draw!(user: current_user, bookings_collector: bookings)
+      bookings
     end
 
-    def may_draw
-      return unless ballot
-
-      state_machine.may_draw?(current_user)
+    def notify_successful_entrants(bookings)
+      bookings.each do |booking|
+        NotificationsMailer.with(recipient: booking.user, booking: booking)
+          .success
+          .deliver_later
+      end
     end
 
     class << self

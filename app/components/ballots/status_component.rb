@@ -1,32 +1,37 @@
 module Ballots
   class StatusComponent < ApplicationComponent
-    # include StateMachine
-
-    attr_reader :state_machine
+    attr_reader :ballot
     
-    delegate :aasm, :open?, :closed?, :drawn?, to: :state_machine
+    delegate :aasm_state, :open?, :closed?, :drawn?, to: :ballot
     
     def initialize(ballot:, except: [])
       super(ballot: ballot, except: except)
-      @state_machine = StateMachine.new(ballot)
+      @ballot = ballot
     end
 
-    def status
-      aasm.human_state
+    def status_text
+      case aasm_state
+      when 'opened'
+        'Ballot open'
+      when 'closed'
+        'Ballot closed'
+      else 'drawn'
+        'Ballot drawn'
+      end
     end
 
     def status_badge
-      render Bulma::TagComponent.new(text: aasm.human_state, modifier: bulma_modifier)
+      render Bulma::TagComponent.new(text: status_text, modifier: bulma_modifier)
     end
 
     BULMA_MAP = {
-      open:   :warn,
+      opened: :success,
       closed: :dark,
       drawn:  :success
     }
 
     def bulma_modifier
-      BULMA_MAP.fetch(aasm.current_state, :dark)
+      BULMA_MAP.fetch(aasm_state.to_sym, :dark)
     end
   end
 end

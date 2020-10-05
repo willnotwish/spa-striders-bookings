@@ -22,4 +22,37 @@ class Ballot < ApplicationRecord
     closed:    40, # no more entries
     drawn:     50  # all done (final state)
   }
+
+  # def has_space?
+  #   !full?
+  # end
+
+  # def full?
+  #   return false if capacity.blank?
+
+  #   ballot_entries.count <= capacity
+  # end
+
+  aasm do
+    state :closed, initial: true
+    state :opened
+    state :drawn
+
+    event :open, guard: [AuthorizedToOpenGuard, EventNotStartedGuard] do
+      transitions from: :closed, to: :opened
+    end
+
+    event :close, guard: AuthorizedToCloseGuard do
+      transitions from: :opened, to: :closed
+    end
+
+    event :draw, guard: [AuthorizedToDrawGuard,
+                         EventNotStartedGuard,
+                         EventLockedGuard,
+                         NoDuplicateEntriesGuard] do
+      transitions from:  :closed, 
+                  to:    :drawn, 
+                  after: DrawService
+    end
+  end
 end

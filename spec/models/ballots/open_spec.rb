@@ -47,7 +47,7 @@ module Ballots
         end      
 
         it '#valid? records that the user is not authorized to open' do
-          expect { open.valid? }.to change { open.errors[:ballot].include?(:not_authorized_to_open) }.from(false).to(true)
+          expect { open.valid? }.to change { open.errors[:ballot].include?(:authorized_to_open_guard_failed) }.from(false).to(true)
         end
       end
     end

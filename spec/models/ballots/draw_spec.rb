@@ -15,6 +15,9 @@ module Ballots
     context 'with a locked event taking place tomorrow' do
       let(:event) { FactoryBot.create :event, starts_at: 1.day.from_now, aasm_state: :locked}
 
+      before do
+        expect(draw.current_user).to be_admin
+      end
       it { is_expected.to be_valid }
     end
 
@@ -25,7 +28,7 @@ module Ballots
       it { is_expected.to be_invalid }
       it 'when validated records the fact that the user is not authorized' do
         draw.valid?
-        expect(draw.errors[:ballot]).to include(:not_authorized_to_draw)
+        expect(draw.errors[:ballot]).to include(:authorized_to_draw_guard_failed)
       end
     end
 

@@ -4,16 +4,13 @@ module Ballots
 
     attr_reader :user
 
-    def initialize(ballot, user:, guard_failures_collector: nil, **opts)
-      super(ballot, guard_failures_collector: guard_failures_collector)
-     
+    def initialize(ballot, user:, **) 
+      super
       @user = user
     end
 
-    def call
-      guard_against(:not_authorized_to_draw) do
-        authorized? :draw
-      end
+    def success?
+      authorized? :draw
     end
   end
 end

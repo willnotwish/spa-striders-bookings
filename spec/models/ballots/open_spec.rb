@@ -27,7 +27,7 @@ module Ballots
         end
 
         it 'records that the event has already started' do
-          expect(open.errors[:ballot]).to include(:event_already_started)
+          expect(open.errors[:ballot]).to include(:event_not_started_guard_failed)
         end
 
         it 'does not record that the event is not locked' do

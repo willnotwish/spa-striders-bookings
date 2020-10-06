@@ -36,7 +36,7 @@ module Ballots
 
       it 'when validated records the fact that the event is not locked' do
         draw.valid?
-        expect(draw.errors[:ballot]).to include(:event_not_locked)
+        expect(draw.errors[:ballot]).to include(:event_locked_guard_failed)
       end
     end
 
@@ -47,7 +47,7 @@ module Ballots
 
       it 'when validated records the fact that the event has already started' do
         draw.valid?
-        expect(draw.errors[:ballot]).to include(:event_already_started)
+        expect(draw.errors[:ballot]).to include(:event_not_started_guard_failed)
       end
     end
 

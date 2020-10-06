@@ -1,27 +1,20 @@
 module Ballots
   class DrawService
-    attr_reader :options, :ballot
+    attr_reader :ballot,
+                :booking_type, # provisional or confirmed
+                :confirmation_period,
+                :bookings_collector
 
     delegate :event, to: :ballot
     delegate :booked_users, to: :event
 
-    def initialize(*args)
-      @options = args.extract_options!
-      @ballot = args[0]
-
-      raise 'Ballot must be specified as first argument' unless @ballot
-    end
-
-    def booking_type
-      options.fetch(:booking_type, :provisional)
-    end
-
-    def confirmation_period
-      options.fetch(:confirmation_period, 24.hours)
-    end
-
-    def bookings_collector
-      options[:bookings_collector]
+    def initialize(ballot, booking_type: :provisional,
+                           confirmation_period: 24.hours, 
+                           bookings_collector: nil, **)
+      @ballot = ballot
+      @booking_type = booking_type
+      @confirmation_period = confirmation_period
+      @bookings_collector = bookings_collector
     end
 
     def call

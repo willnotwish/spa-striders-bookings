@@ -22,7 +22,7 @@ class Event < ApplicationRecord
   }
   
   include AASM  
-  aasm do
+  aasm enum: true do
     state :draft, initial: true # no bookings allowed
     state :published            # full access by everyone
     state :restricted           # allows cancellations but no new bookings or reinstatements

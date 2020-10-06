@@ -33,26 +33,28 @@ class Ballot < ApplicationRecord
   #   ballot_entries.count <= capacity
   # end
 
-  aasm do
+  include AASM
+  aasm enum: true do
     state :closed, initial: true
     state :opened
     state :drawn
 
-    event :open, guard: [AuthorizedToOpenGuard, EventNotStartedGuard] do
+    event :open, guard: [Ballots::AuthorizedToOpenGuard, 
+      Ballots::EventNotStartedGuard] do
       transitions from: :closed, to: :opened
     end
 
-    event :close, guard: AuthorizedToCloseGuard do
+    event :close, guard: Ballots::AuthorizedToCloseGuard do
       transitions from: :opened, to: :closed
     end
 
-    event :draw, guard: [AuthorizedToDrawGuard,
-                         EventNotStartedGuard,
-                         EventLockedGuard,
-                         NoDuplicateEntriesGuard] do
+    event :draw, guard: [Ballots::AuthorizedToDrawGuard,
+      Ballots::EventNotStartedGuard,
+      Ballots::EventLockedGuard,
+      Ballots::NoDuplicateEntriesGuard] do
       transitions from:  :closed, 
                   to:    :drawn, 
-                  after: DrawService
+                  after: Ballots::DrawService
     end
   end
 end

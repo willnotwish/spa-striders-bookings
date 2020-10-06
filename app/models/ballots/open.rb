@@ -2,19 +2,15 @@ module Ballots
   class Open
     include ActiveModel::Model
 
-    attr_reader :ballot
-    attr_accessor :current_user
+    attr_accessor :ballot, :current_user
 
-    validates :ballot, presence: true, may_fire_event: { event: :open }
-
-    def ballot=(ballot)
-      @ballot = ballot ? StateMachine.new(ballot) : nil
-    end
+    validates :ballot, presence: true, 'ballots/may_open': true
 
     def save
       return false if invalid?
       
       ballot.open(current_user)
+      ballot.save!
     end
   end
 end

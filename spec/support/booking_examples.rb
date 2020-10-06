@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "a valid booking operation" do
+RSpec.shared_examples 'a valid booking operation' do
   it { is_expected.to be_valid }
 
   it "#save returns truthy" do

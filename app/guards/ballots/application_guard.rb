@@ -1,11 +1,12 @@
 module Ballots
   class ApplicationGuard
-    attr_reader :options, :user, :ballot
+    attr_reader :ballot, :guard_failures_collector
 
-    def initialize(*args)
-      @options = args.extract_options!
-      @ballot = args[0].ballot
-      @user = args[1]
+    def initialize(ballot, guard_failures_collector: nil, **opts)
+      raise 'Ballot must be specified as first argument' unless ballot.present?
+
+      @ballot = ballot
+      @guard_failures_collector = guard_failures_collector
     end
 
     private
@@ -14,8 +15,7 @@ module Ballots
       raise 'No block supplied' unless block_given?
       return true if yield
 
-      collector = options[:guard_failures_collector]
-      collector&.call(failure)
+      guard_failures_collector&.call(failure)
       
       false
     end

@@ -12,11 +12,11 @@ RSpec.describe SelfServiceBooking, type: :model do
 
   before do
     booking.user = steve_runner  
-    booking.event = hills
+    booking.event_id = hills&.id
   end
 
   it { is_expected.to validate_presence_of(:user) }
-  it { is_expected.to validate_presence_of(:event) }
+  it { is_expected.to validate_presence_of(:event_id) }
 
   context 'when Steve Runner has given no contact number' do
     let(:steve_runner) { FactoryBot.create(:user) }
@@ -36,6 +36,10 @@ RSpec.describe SelfServiceBooking, type: :model do
     let(:hills) { FactoryBot.create(:event, starts_at: 1.week.from_now) }
 
     it_behaves_like "a valid booking operation"
+
+    it 'saving the booking send Steve an email' do
+      expect { booking.save }.to change(ActionMailer::Base.deliveries, :count).by_at_least(1)
+    end
   end
 
   context 'for a full hills session starting next week' do
@@ -65,7 +69,7 @@ RSpec.describe SelfServiceBooking, type: :model do
     it_behaves_like "an invalid booking operation"
   end
 
-  context 'for hills session on which Steve Runner is already booked' do
+  context 'for a hills session on which Steve Runner is already booked' do
     let(:hills) do
       FactoryBot.create(:event, starts_at: 1.week.from_now, capacity: 6).tap do |event|
         FactoryBot.create(:booking, user: steve_runner, event: event)

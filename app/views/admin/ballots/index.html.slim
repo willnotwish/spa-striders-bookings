@@ -1,0 +1,16 @@
+h2.title Ballots
+
+- if @event
+  h3.subtitle = link_to @event.name, [:admin, @event]
+
+hr
+
+- if @event
+  = link_to 'New', [:new, :admin, @event, :ballot]
+
+/ = render Ballots::OverviewComponent.as_list(@ballots, except: :event)
+
+ul
+  - @ballots.each do |ballot|
+    = link_to [:admin, ballot] do
+      = render(Ballots::OverviewComponent.new(ballot: ballot))

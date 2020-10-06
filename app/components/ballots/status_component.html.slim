@@ -1,0 +1,6 @@
+= root do |bem|
+  = bem.element :status_badge
+  - if ballot.opened?
+    = bem.element :closes, "Closes #{closes_at_date} at #{closes_at_time}"
+  - elsif ballot.closed?
+    = bem.element :opens, "Opens #{opens_at_date} at #{opens_at_time}"

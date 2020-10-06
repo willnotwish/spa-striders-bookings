@@ -1,8 +1,19 @@
 class Event < ApplicationRecord
   has_many :bookings
-  has_many :confirmed_bookings, -> { confirmed }, class_name: 'Booking'
-  has_many :honoured_bookings, -> { honoured }, class_name: 'Booking'
+  has_many :booked_users, through: :bookings, source: :user
 
+  with_options class_name: 'Booking' do
+    has_many :confirmed_bookings, -> { confirmed }
+    has_many :provisional_or_confirmed_bookings, -> { provisional_or_confirmed }
+    has_many :honoured_bookings, -> { honoured }
+  end
+
+  has_many :ballots
+  has_one :waiting_list
+
+  has_many :event_admins
+  has_many :event_admin_users, through: :event_admins, source: :user
+  
   enum aasm_state: {
     draft:      10,
     published:  20,
@@ -11,7 +22,7 @@ class Event < ApplicationRecord
   }
   
   include AASM  
-  aasm do
+  aasm enum: true do
     state :draft, initial: true # no bookings allowed
     state :published            # full access by everyone
     state :restricted           # allows cancellations but no new bookings or reinstatements
@@ -39,7 +50,7 @@ class Event < ApplicationRecord
   def full?
     return false if capacity.blank?
 
-    confirmed_bookings.count >= capacity
+    provisional_or_confirmed_bookings.count >= capacity
   end
 
   def future?
@@ -74,9 +85,14 @@ class Event < ApplicationRecord
       left_outer_joins(:confirmed_bookings).where('bookings.id IS NULL')
     end
 
+    def with_no_provisional_or_confirmed_bookings
+      left_outer_joins(:provisional_or_confirmed_bookings)
+        .where('bookings.id IS NULL')
+    end
+
     def with_space
       # To be rewritten without the SQL fragments
-      left_outer_joins(:confirmed_bookings)
+      left_outer_joins(:provisional_or_confirmed_bookings)
         .group('events.id, events.capacity')
         .having('count(bookings.id) < events.capacity')
     end

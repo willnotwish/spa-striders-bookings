@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Event, type: :model do
   let(:steve) { FactoryBot.create(:user) }
 
+  it { is_expected.to have_many(:ballots) }
   it { is_expected.to validate_presence_of(:name) }
 
   describe 'scopes' do

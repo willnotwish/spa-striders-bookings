@@ -25,8 +25,7 @@ module UserAuthentication
   end
 end
 
-# Leave this here for a while as a reminder.
-# This is how devise does it...
+# Leave for a while as a reminder. This is how devise does it.
 
 # def authenticate_#{mapping}!(opts={})
 #   opts[:scope] = :#{mapping}

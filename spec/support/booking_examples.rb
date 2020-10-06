@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.shared_examples "a valid booking operation" do
+RSpec.shared_examples 'a valid booking operation' do
   it { is_expected.to be_valid }
 
   it "#save returns truthy" do
     expect(booking.save).to eq(true)
   end
 
-  it '#save produces a confirmed booking the database' do
-    expect { booking.save }.to change { Booking.confirmed.count }.by(1)
+  it '#save produces a booking the database' do
+    expect { booking.save }.to change { Booking.count }.by(1)
   end
 end
 
@@ -19,7 +19,7 @@ RSpec.shared_examples "an invalid booking operation" do
     expect(booking.save).to eq(false)
   end
 
-  it '#save produces no change in the number of confirmed bookings' do
-    expect { booking.save }.not_to change { Booking.confirmed.count }
+  it '#save produces no change in the number of bookings' do
+    expect { booking.save }.not_to change { Booking.count }
   end
 end

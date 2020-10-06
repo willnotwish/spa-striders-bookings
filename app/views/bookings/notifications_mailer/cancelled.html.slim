@@ -1,0 +1,9 @@
+h1 Your booking on #{@booking.event.starts_at.to_date} has been cancelled
+
+p = @greeting
+
+p Details
+p = @booking.inspect
+
+- if @source.present?
+  p The source of this cancellation is #{@source}

@@ -2,6 +2,8 @@ class Booking < ApplicationRecord
   belongs_to :event
   belongs_to :user
 
+  has_many :transitions, class_name: 'Bookings::Transition'
+
   with_options class_name: 'User', optional: true do
     belongs_to :locked_by
     belongs_to :honoured_by
@@ -32,6 +34,10 @@ class Booking < ApplicationRecord
 
     def honoured
       where.not(honoured_at: nil)
+    end
+
+    def provisional_or_confirmed
+      where(aasm_state: :provisional).or(where(aasm_state: :confirmed))
     end
   end
 end

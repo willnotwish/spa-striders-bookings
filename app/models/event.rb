@@ -24,9 +24,9 @@ class Event < ApplicationRecord
   include AASM  
   aasm enum: true do
     state :draft, initial: true # no bookings allowed
-    state :published            # full access by everyone
-    state :restricted           # allows cancellations but no new bookings or reinstatements
-    state :locked               # allows neither cancellations nor reinstatements
+    state :published   # full access by everyone
+    state :restricted  # allows cancellations but no new bookings or reinstatements
+    state :locked      # allows neither cancellations nor reinstatements
 
     event :publish do
       transitions from: %i[draft restricted locked], to: :published
@@ -43,23 +43,23 @@ class Event < ApplicationRecord
 
   validates :name, presence: true
 
-  def has_space?
-    !full?
-  end
+  # def has_space?
+  #   !full?
+  # end
 
-  def full?
-    return false if capacity.blank?
+  # def full?
+  #   return false if capacity.blank?
 
-    provisional_or_confirmed_bookings.count >= capacity
-  end
+  #   provisional_or_confirmed_bookings.count >= capacity
+  # end
 
-  def future?
-    starts_at > Time.now
-  end
+  # def future?
+  #   starts_at > Time.now
+  # end
 
-  def past?
-    !future?
-  end
+  # def past?
+  #   !future?
+  # end
 
   class << self
     def future

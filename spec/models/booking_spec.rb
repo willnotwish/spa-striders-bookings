@@ -7,7 +7,4 @@ RSpec.describe Booking, type: :model do
   it { is_expected.to belong_to(:locked_by).optional }
   it { is_expected.to belong_to(:honoured_by).optional }
   it { is_expected.to belong_to(:made_by).optional }
-
-  it { is_expected.to delegate_method(:future?).to(:event) }
-  it { is_expected.to delegate_method(:past?).to(:event) }
 end

@@ -1,24 +1,30 @@
 class User < ApplicationRecord
-  validates :email, :members_user_id, presence: true
-  validates :members_user_id, uniqueness: true
-
   has_many :bookings
   has_many :events, through: :bookings
 
-  has_many :confirmed_bookings, -> { confirmed }, class_name: 'Booking'
-  has_many :confirmed_events, through: :confirmed_bookings, source: :event
+  with_options class_name: 'Booking' do
+    has_many :confirmed_bookings,   -> { confirmed }
+    has_many :provisional_bookings, -> { provisional }
+    has_many :cancelled_bookings,   -> { cancelled }
+    has_many :provisional_or_confirmed_bookings, -> { provisional_or_confirmed }
+  end
 
-  has_many :provisional_bookings, -> { provisional }, class_name: 'Booking'
+  has_many :confirmed_events,
+    through: :confirmed_bookings, source: :event
 
-  has_many :provisional_or_confirmed_bookings, -> { provisional_or_confirmed }, class_name: 'Booking'
-  has_many :provisional_or_confirmed_events, through: :provisional_or_confirmed_bookings, source: :event
-
-  has_many :cancelled_bookings, -> { cancelled }, class_name: 'Booking'
+  has_many :provisional_or_confirmed_events, 
+    through: :provisional_or_confirmed_bookings, source: :event
 
   has_one :contact_number
   
   has_many :ballot_entries
   has_many :ballots, through: :ballot_entries
+
+  has_many :event_admins
+  has_many :administered_events, through: :event_admins, source: :event
+
+  validates :email, :members_user_id, presence: true
+  validates :members_user_id, uniqueness: true
 
   delegate :phone, to: :contact_number, allow_nil: true
 

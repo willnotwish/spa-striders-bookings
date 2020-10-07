@@ -1,6 +1,6 @@
-module Ballots
+module Bookings
   class ApplicationGuard < ::ApplicationGuard
-    def ballot
+    def booking
       model
     end
   end

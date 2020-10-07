@@ -16,22 +16,10 @@ class Ballot < ApplicationRecord
                    allow_nil: true
 
   enum aasm_state: {
-    # draft:     10, # no visibility (initial state)
-    # published: 20, # visible to everyone
     opened:    30, # accepting entries
     closed:    40, # no more entries
     drawn:     50  # all done (final state)
   }
-
-  # def has_space?
-  #   !full?
-  # end
-
-  # def full?
-  #   return false if capacity.blank?
-
-  #   ballot_entries.count <= capacity
-  # end
 
   include AASM
   aasm enum: true do

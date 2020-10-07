@@ -17,7 +17,36 @@ class Booking < ApplicationRecord
     deleted: 4
   }
 
-  delegate :future?, :past?, to: :event
+  include AASM
+  aasm enum: true do
+    
+    # Note that sending notifications is the controller's responsibility
+    # and not the model's.
+
+    state :provisional, initial: true
+    state :confirmed, after_enter: -> { self.expires_at = nil }
+    state :cancelled
+
+    event :confirm do
+      transitions from:  :provisional,
+                  to:    :confirmed,
+                  guard: Bookings::AuthorizedToConfirmGuard
+    end
+
+    event :cancel do
+      transitions from:  %i[provisional confirmed], 
+                  to:    :cancelled,
+                  guard: Bookings::AuthorizedToCancelGuard
+    end
+
+    event :reinstate do
+      transitions from:  :cancelled,
+                  to:    :confirmed,
+                  guard: Bookings::AuthorizedToReinstateGuard
+    end
+
+    after_all_transitions Bookings::TransitionHistoryService
+  end
 
   class << self
     def future

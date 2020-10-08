@@ -13,6 +13,8 @@ class Event < ApplicationRecord
 
   has_many :event_admins
   has_many :event_admin_users, through: :event_admins, source: :user
+
+  has_many :transitions, class_name: 'Events::Transition'
   
   enum aasm_state: {
     draft:      10,

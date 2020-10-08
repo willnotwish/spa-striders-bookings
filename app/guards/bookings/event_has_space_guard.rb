@@ -1,9 +1,10 @@
 module Bookings
   class EventHasSpaceGuard < ApplicationGuard
+    include EventHasSpace
     delegate :event, to: :booking
 
     def success?
-      event.has_space?
+      event_has_space?
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_30_102531) do
+ActiveRecord::Schema.define(version: 2020_10_07_153804) do
 
   create_table "ballot_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -33,6 +33,18 @@ ActiveRecord::Schema.define(version: 2020_09_30_102531) do
     t.integer "aasm_state"
     t.text "rules"
     t.index ["event_id"], name: "index_ballots_on_event_id"
+  end
+
+  create_table "ballots_transitions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "source_type", null: false
+    t.bigint "source_id", null: false
+    t.bigint "ballot_id", null: false
+    t.string "from_state"
+    t.string "to_state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ballot_id"], name: "index_ballots_transitions_on_ballot_id"
+    t.index ["source_type", "source_id"], name: "index_ballots_transitions_on_source_type_and_source_id"
   end
 
   create_table "bookings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -93,6 +105,18 @@ ActiveRecord::Schema.define(version: 2020_09_30_102531) do
     t.timestamp "published_at"
   end
 
+  create_table "events_transitions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "source_type", null: false
+    t.bigint "source_id", null: false
+    t.bigint "event_id", null: false
+    t.string "from_state"
+    t.string "to_state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_events_transitions_on_event_id"
+    t.index ["source_type", "source_id"], name: "index_events_transitions_on_source_type_and_source_id"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email"
     t.string "first_name"
@@ -129,12 +153,14 @@ ActiveRecord::Schema.define(version: 2020_09_30_102531) do
   add_foreign_key "ballot_entries", "ballots"
   add_foreign_key "ballot_entries", "users"
   add_foreign_key "ballots", "events"
+  add_foreign_key "ballots_transitions", "ballots"
   add_foreign_key "bookings", "events"
   add_foreign_key "bookings", "users"
   add_foreign_key "bookings_transitions", "bookings"
   add_foreign_key "contact_numbers", "users"
   add_foreign_key "event_admins", "events"
   add_foreign_key "event_admins", "users"
+  add_foreign_key "events_transitions", "events"
   add_foreign_key "waiting_list_entries", "users"
   add_foreign_key "waiting_list_entries", "waiting_lists"
   add_foreign_key "waiting_lists", "events"

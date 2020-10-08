@@ -6,7 +6,11 @@ module BookingOperation
     attr_accessor :user, :event_id
 
     validates :user, :event_id, presence: true  
+
+    # Experimental
+    # validates :user, uniqueness: { scope: :event }
     validate :not_already_booked
+
   end
 
   def event

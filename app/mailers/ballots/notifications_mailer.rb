@@ -34,7 +34,7 @@ module Ballots
       @greeting = "Hi"
       @ballot_entry = params[:ballot_entry]
       @user = @ballot_entry.user
-      @ballot = @ballot_entry
+      @ballot = @ballot_entry.ballot
       @event = @ballot.event
       @recipient = params[:recipient]
       mail to: @recipient.email

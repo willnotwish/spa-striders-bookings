@@ -28,6 +28,14 @@ module Bookings
       it 'increases the number of confirmed bookings by 1' do
         expect { booking.confirm!(user: actor) }.to change { Booking.confirmed.count }.by(1)
       end
+
+      it 'adds a transition to the booking' do
+        expect { booking.confirm!(user: actor) }.to change { booking.transitions.size }.by(1)
+      end
+
+      it 'generates a booking transition record' do
+        expect { booking.confirm!(user: actor) }.to change { Bookings::Transition.count }.by(1)
+      end
     end
 
     RSpec.shared_examples 'is confirmed by a confirm event' do
@@ -104,6 +112,14 @@ module Bookings
 
       it 'increases the number of cancelled bookings by 1' do
         expect { booking.cancel!(user: booking.user) }.to change { Booking.cancelled.count }.by(1)
+      end
+
+      it 'adds a transition to the booking' do
+        expect { booking.cancel!(user: booking.user) }.to change { booking.transitions.size }.by(1)
+      end
+
+      it 'generates a booking transition record' do
+        expect { booking.cancel!(user: booking.user) }.to change { Bookings::Transition.count }.by(1)
       end
     end
 

@@ -9,6 +9,8 @@ class Ballot < ApplicationRecord
     has_many :unsuccessful_entries, -> { unsuccessful }
   end
 
+  has_many :transitions, class_name: 'Ballots::Transition'
+
   validates :opens_at, :closes_at, presence: true
 
   # If the size is nil, the ballot is unlimited
@@ -18,7 +20,7 @@ class Ballot < ApplicationRecord
   enum aasm_state: {
     opened:    30, # accepting entries
     closed:    40, # no more entries
-    drawn:     50  # all done (final state)
+    drawn:     50
   }
 
   include AASM
@@ -27,7 +29,8 @@ class Ballot < ApplicationRecord
     state :opened
     state :drawn
 
-    event :open, guard: [Ballots::AuthorizedToOpenGuard, 
+    event :open, guard: [
+      Ballots::AuthorizedToOpenGuard, 
       Ballots::EventNotStartedGuard] do
       transitions from: :closed, to: :opened
     end
@@ -36,7 +39,8 @@ class Ballot < ApplicationRecord
       transitions from: :opened, to: :closed
     end
 
-    event :draw, guard: [Ballots::AuthorizedToDrawGuard,
+    event :draw, guard: [
+      Ballots::AuthorizedToDrawGuard,
       Ballots::EventNotStartedGuard,
       Ballots::EventLockedGuard,
       Ballots::NoDuplicateEntriesGuard] do
@@ -44,5 +48,7 @@ class Ballot < ApplicationRecord
                   to:    :drawn, 
                   after: Ballots::DrawService
     end
+
+    after_all_transitions StateTransitionBuilderService
   end
 end

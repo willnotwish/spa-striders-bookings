@@ -1,24 +1,37 @@
 module Bookings
   class Cancellation
-    include HasStatefulBooking
+    include ActiveModel::Model
 
-    validate :check_guard
+    attr_accessor :booking, :current_user
+    validates :booking, presence: true, may: { event: :cancel }
 
     def save
       return false if invalid?
       
-      stateful_booking.cancel
+      booking.cancel!(user: current_user)
+      notify_owner
     end
 
     private
 
-    def check_guard
-      return unless booking # just like an EachValidator. Long story...
+    def notify_owner
+      params = {
+        recipient: booking.user, 
+        booking: booking,
+        source: current_user
+      }
 
-      guard = Guards::Cancellable.new(stateful_booking)
-      unless guard.call
-        @errors[:booking] << "cannot be cancelled at this time"
-      end
+      NotificationsMailer.with(params).cancelled.deliver_later
     end
+
+    # def notify_event_admins
+    #   params = {
+    #     recipient: booking.event.event_admins, 
+    #     booking: booking,
+    #     source: current_user
+    #   }
+
+    #   NotificationsMailer.with(params).cancelled.deliver_later
+    # end
   end
 end

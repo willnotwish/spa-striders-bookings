@@ -2,27 +2,16 @@ class Booking < ApplicationRecord
   belongs_to :event
   belongs_to :user
 
-  has_many :transitions, class_name: 'Bookings::Transition'
-
   with_options class_name: 'User', optional: true do
     belongs_to :locked_by
     belongs_to :honoured_by
     belongs_to :made_by
   end
 
-  enum aasm_state: {
-    provisional: 1,
-    confirmed: 2,
-    cancelled: 3,
-    deleted: 4
-  }
+  has_many :transitions, class_name: 'Bookings::Transition'
 
   include AASM
   aasm enum: true do
-    
-    # Note that sending notifications is the controller's responsibility
-    # and not the model's.
-
     state :provisional, initial: true
     state :confirmed, after_enter: -> { self.expires_at = nil }
     state :cancelled
@@ -45,8 +34,15 @@ class Booking < ApplicationRecord
                   guard: Bookings::AuthorizedToReinstateGuard
     end
 
-    after_all_transitions Bookings::TransitionHistoryService
+    after_all_transitions StateTransitionBuilderService
   end
+
+  enum aasm_state: {
+    provisional: 1,
+    confirmed: 2,
+    cancelled: 3,
+    deleted: 4
+  }
 
   class << self
     def future

@@ -1,5 +1,5 @@
 module Bookings
-  class TransitionHistoryService
+  class BuildTransitionService
     attr_reader :booking, :source
     delegate :aasm, to: :booking
 

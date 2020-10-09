@@ -8,8 +8,8 @@ class Event < ApplicationRecord
     has_many :honoured_bookings, -> { honoured }
   end
 
-  has_many :ballots
-  has_one :waiting_list
+  has_one :ballot
+  # has_one :waiting_list
 
   has_many :event_admins
   has_many :event_admin_users, through: :event_admins, source: :user
@@ -44,24 +44,6 @@ class Event < ApplicationRecord
   end
 
   validates :name, presence: true
-
-  # def has_space?
-  #   !full?
-  # end
-
-  # def full?
-  #   return false if capacity.blank?
-
-  #   provisional_or_confirmed_bookings.count >= capacity
-  # end
-
-  # def future?
-  #   starts_at > Time.now
-  # end
-
-  # def past?
-  #   !future?
-  # end
 
   class << self
     def future

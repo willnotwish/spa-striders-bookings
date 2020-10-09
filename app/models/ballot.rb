@@ -20,7 +20,7 @@ class Ballot < ApplicationRecord
   enum aasm_state: {
     opened:    30, # accepting entries
     closed:    40, # no more entries
-    drawn:     50
+    drawn:     50  # drawn at least once
   }
 
   include AASM

@@ -2,12 +2,39 @@ class Booking < ApplicationRecord
   belongs_to :event
   belongs_to :user
 
-  has_many :transitions, class_name: 'Bookings::Transition'
-
   with_options class_name: 'User', optional: true do
     belongs_to :locked_by
     belongs_to :honoured_by
     belongs_to :made_by
+  end
+
+  has_many :transitions, class_name: 'Bookings::Transition'
+
+  include AASM
+  aasm enum: true do
+    state :provisional, initial: true
+    state :confirmed, after_enter: -> { self.expires_at = nil }
+    state :cancelled
+
+    event :confirm do
+      transitions from:  :provisional,
+                  to:    :confirmed,
+                  guard: Bookings::AuthorizedToConfirmGuard
+    end
+
+    event :cancel do
+      transitions from:  %i[provisional confirmed], 
+                  to:    :cancelled,
+                  guard: Bookings::AuthorizedToCancelGuard
+    end
+
+    event :reinstate do
+      transitions from:  :cancelled,
+                  to:    :confirmed,
+                  guard: Bookings::AuthorizedToReinstateGuard
+    end
+
+    after_all_transitions StateTransitionBuilderService
   end
 
   enum aasm_state: {
@@ -16,8 +43,6 @@ class Booking < ApplicationRecord
     cancelled: 3,
     deleted: 4
   }
-
-  delegate :future?, :past?, to: :event
 
   class << self
     def future

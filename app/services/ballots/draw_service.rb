@@ -57,13 +57,13 @@ module Ballots
         index = ballot.ballot_entries.to_a.index(drawn_entry)
                   
         booking = ballot.ballot_entries[index].build_booking booking_attrs
-        notify_new_booking(booking)
+        collect_new_booking(booking)
 
         bookings_made += 1
       end  
     end
 
-    def notify_new_booking(booking)
+    def collect_new_booking(booking)
       if bookings_collector
         bookings_collector << booking
       end

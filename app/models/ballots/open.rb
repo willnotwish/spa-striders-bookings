@@ -9,8 +9,8 @@ module Ballots
     def save
       return false if invalid?
       
-      ballot.open(current_user)
-      ballot.save!
+      ballot.open!(user: current_user)
+      true
     end
   end
 end

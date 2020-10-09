@@ -72,6 +72,7 @@ module Ballots
     context 'after the event is locked by an admin' do
       before do
         hills.lock(admin)
+        expect(ballot).to be_closed
       end
 
       it 'can be drawn by an admin' do
@@ -86,8 +87,16 @@ module Ballots
         expect { ballot.draw(user: regular_user) }.to raise_error(AASM::InvalidTransition)
       end
 
-      it 'drawing the ballot on a locked event changes its persisted state to drawn' do
-        expect { draw_ballot(admin) }.to change { ballot.aasm_state }.to('drawn')
+      it 'drawing the ballot without a bang changes its current state to drawn' do
+        expect { ballot.draw(user: admin) }.to change { ballot.aasm.current_state }.from(:closed).to(:drawn)
+      end
+
+      it 'drawing the ballot without a bang does not change the persisted ballot\'s state' do
+        expect { ballot.draw(user: admin) }.not_to change { Ballot.find(ballot.id).aasm_state }
+      end
+
+      it 'drawing the ballot with a bang changes the persisted ballot\'s state' do
+        expect { ballot.draw!(user: admin) }.to change { Ballot.find(ballot.id).aasm_state }.to('drawn')
       end
 
       it '#draw returns true' do

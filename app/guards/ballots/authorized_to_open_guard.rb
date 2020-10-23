@@ -2,7 +2,7 @@ module Ballots
   class AuthorizedToOpenGuard < ApplicationGuard
     include PunditAuthorization
 
-    def success?
+    def pass?
       authorized? :open
     end
   end

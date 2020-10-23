@@ -62,16 +62,16 @@ module Ballots
     end
 
     it 'locking the event allows the ballot to be drawn by an admin' do
-      expect { hills.lock(admin) }.to change { ballot.may_draw?(user: admin) }.from(false).to(true)
+      expect { hills.lock(user: admin) }.to change { ballot.may_draw?(user: admin) }.from(false).to(true)
     end
 
     it 'locking the event does not allow the ballot to be drawn by a regular user' do
-      expect { hills.lock(admin) }.not_to change { ballot.may_draw?(user: regular_user) }
+      expect { hills.lock(user: admin) }.not_to change { ballot.may_draw?(user: regular_user) }
     end
 
     context 'after the event is locked by an admin' do
       before do
-        hills.lock(admin)
+        hills.lock(user: admin)
         expect(ballot).to be_closed
       end
 

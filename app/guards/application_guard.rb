@@ -14,7 +14,7 @@ class ApplicationGuard
   end
 
   def call
-    return true if success?
+    return true if pass?
 
     failures_collector&.call(failure_reason)
     false

@@ -1,0 +1,21 @@
+# bookings.yml
+
+# Access from Rails.application.config.bookings_config
+
+default: &default
+  entry_selection_strategy: first_come_first_served
+  booking_confirmation_period_in_minutes: <%= 24 * 60 %>  # 24 hours
+  booking_cancellation_cooling_off_period_in_minutes: 5
+  booking_type: provisional
+
+production:
+  entry_selection_strategy: '<%= ENV['BOOKINGS_ENTRY_SELECTION_STRATEGY'] || 'first_come_first_served' %>'
+  booking_confirmation_period_in_minutes: '<%= ENV['BOOKINGS_CONFIRMATION_PERIOD'] || 24 * 60 %>'  # 24 hours
+  booking_cancellation_cooling_off_period_in_minutes: '<%= ENV['BOOKINGS_CANCELLATION_COOLING_OFF_PERIOD'] || 5 %>'
+  booking_type: '<%= ENV['BOOKINGS_BOOKING_TYPE'] || 'provisional' %>'
+  
+development:
+  <<: *default
+
+test:
+  <<: *default

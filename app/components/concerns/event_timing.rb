@@ -1,3 +1,5 @@
+# Timing-related concern. Can be included
+# in any class that responds to #event.
 module EventTiming
   extend ActiveSupport::Concern
 
@@ -14,7 +16,7 @@ module EventTiming
   end
 
   def event_started?
-    Time.now > event_starts_at
+    Time.current > event_starts_at
   end
 
   def event_not_started?

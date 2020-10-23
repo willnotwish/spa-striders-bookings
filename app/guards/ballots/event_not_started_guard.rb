@@ -4,7 +4,7 @@ module Ballots
 
     delegate :event, to: :ballot
 
-    def success?
+    def pass?
       event_not_started?
     end
   end

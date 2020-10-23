@@ -16,21 +16,18 @@ class Booking < ApplicationRecord
     state :confirmed, after_enter: -> { self.expires_at = nil }
     state :cancelled
 
-    event :confirm do
-      transitions from:  :provisional,
-                  to:    :confirmed,
-                  guard: Bookings::AuthorizedToConfirmGuard
+    event :confirm, guard: Bookings::AuthorizedToConfirmGuard do
+      transitions from: :provisional, to: :confirmed
     end
 
-    event :cancel do
+    event :cancel, after_enter: Bookings::StartCancellationCoolOff do
       transitions from:  %i[provisional confirmed], 
                   to:    :cancelled,
                   guard: Bookings::AuthorizedToCancelGuard
     end
 
     event :reinstate do
-      transitions from:  :cancelled,
-                  to:    :confirmed,
+      transitions from: :cancelled, to: :confirmed,
                   guard: Bookings::AuthorizedToReinstateGuard
     end
 
@@ -40,8 +37,7 @@ class Booking < ApplicationRecord
   enum aasm_state: {
     provisional: 1,
     confirmed: 2,
-    cancelled: 3,
-    deleted: 4
+    cancelled: 3
   }
 
   class << self

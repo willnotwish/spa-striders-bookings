@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'application_responder'
 
+# Base for all controllers
 class ApplicationController < ActionController::Base
   self.responder = ApplicationResponder
 
@@ -18,7 +21,7 @@ class ApplicationController < ActionController::Base
   private
 
   def ensure_test_user!
-    logger.warn "ensure_test_user! Use only during development..."
+    logger.warn 'ensure_test_user! Use only during development...'
     steve = User.find_or_create_by!(email: 'test@example.com', members_user_id: 1) do |u|
       u.first_name = 'Steve'
       u.last_name = 'Runner'

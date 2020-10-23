@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
   direct :logout do
     Rails.application.secrets.members_logout_path
@@ -6,7 +9,7 @@ Rails.application.routes.draw do
   scope '/book' do
     get 'home/index'
     get 'login', to: redirect(Rails.application.secrets.members_login_path)
-    
+
     resources :bookings, except: %i[new create] do
       # Note the module 'booking'. This namespaces only the controller.
       # Do this because the corresponding model is Booking::Confirmation.
@@ -35,7 +38,6 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resources :events do
-
         # Note the module 'event'. This namespaces only the controller.
         # Do this because the corresponding model is Admin::Event::Publication.
         # Makes the controllers easier to write (I hope)
@@ -68,10 +70,11 @@ Rails.application.routes.draw do
       resources :ballots, only: :index
       resources :users, only: %i[index show edit update]
       resource :dashboard, only: :show
-      
+
       root to: 'dashboard#show'
     end
 
     root to: 'home#index'
   end
 end
+# rubocop:enable Metrics/BlockLength

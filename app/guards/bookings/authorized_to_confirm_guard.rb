@@ -2,7 +2,7 @@ module Bookings
   class AuthorizedToConfirmGuard < ApplicationGuard
     include PunditAuthorization
 
-    def success?
+    def pass?
       authorized? :confirm
     end
   end

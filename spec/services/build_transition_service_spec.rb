@@ -19,7 +19,7 @@ end
 RSpec.describe StateTransitionBuilderService, type: :service do
   let(:steve_runner) { FactoryBot.create :user }
   let(:hills) { FactoryBot.create :event }
-  let(:aasm) { double 'aasm', from_state: :foo, to_state: :bar }
+  let(:aasm) { double 'aasm', from_state: :foo, to_state: :bar, current_event: :foobar }
   let(:service) { subject } # alias
 
   before do
@@ -42,7 +42,7 @@ RSpec.describe StateTransitionBuilderService, type: :service do
     end
 
     context 'when the source is Steve Runner' do
-      subject { described_class.new(booking, source: steve_runner) }
+      subject { described_class.new(booking, user: steve_runner) }
 
       it_behaves_like 'a builder service'
 
@@ -68,7 +68,7 @@ RSpec.describe StateTransitionBuilderService, type: :service do
     end
 
     context 'when the source is Steve Runner' do
-      subject { described_class.new(model, source: steve_runner) }
+      subject { described_class.new(model, user: steve_runner) }
 
       it_behaves_like 'a builder service'
 
@@ -95,7 +95,7 @@ RSpec.describe StateTransitionBuilderService, type: :service do
     end
 
     context 'when the source is Steve Runner' do
-      subject { described_class.new(model, source: steve_runner) }
+      subject { described_class.new(model, user: steve_runner) }
 
       it_behaves_like 'a builder service'
 

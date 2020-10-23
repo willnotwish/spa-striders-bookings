@@ -3,7 +3,7 @@ module Bookings
     include EventHasSpace
     delegate :event, to: :booking
 
-    def success?
+    def pass?
       event_has_space?
     end
   end

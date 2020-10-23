@@ -4,7 +4,7 @@ module Bookings
 
     delegate :event, to: :booking
 
-    def success?
+    def pass?
       event_not_started?
     end
   end

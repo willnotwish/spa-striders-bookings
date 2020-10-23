@@ -34,6 +34,7 @@ class ApplicationPolicy
     false
   end
 
+  # Refines the given scope by limiting those records accessible to the given user
   class Scope
     attr_reader :user, :scope
 
@@ -45,5 +46,12 @@ class ApplicationPolicy
     def resolve
       scope.all
     end
+
+    def with_defaults
+      return scope.none if user.blank?
+      return scope.all if user.admin?
+
+      yield
+    end  
   end
 end

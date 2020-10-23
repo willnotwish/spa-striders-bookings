@@ -6,7 +6,7 @@ module PunditAuthorization
     alias_method :authorized_to?, :authorized?
   end
 
-  def initialize(ballot, user:, **)
+  def initialize(model, user:, **)
     super 
     @user = user
   end

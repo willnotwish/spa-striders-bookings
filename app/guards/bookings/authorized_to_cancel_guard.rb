@@ -2,7 +2,7 @@ module Bookings
   class AuthorizedToCancelGuard < ApplicationGuard
     include PunditAuthorization
 
-    def success?
+    def pass?
       authorized_to? :cancel
     end
   end

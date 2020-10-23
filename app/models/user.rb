@@ -10,18 +10,29 @@ class User < ApplicationRecord
   end
 
   has_many :confirmed_events,
-    through: :confirmed_bookings, source: :event
+           through: :confirmed_bookings,
+           source: :event
 
   has_many :provisional_or_confirmed_events, 
-    through: :provisional_or_confirmed_bookings, source: :event
+           through: :provisional_or_confirmed_bookings,
+           source: :event
 
   has_one :contact_number
-  
-  has_many :ballot_entries
-  has_many :ballots, through: :ballot_entries
 
+  has_many :event_entries
   has_many :event_admins
-  has_many :administered_events, through: :event_admins, source: :event
+
+  has_many :administered_events,
+           through: :event_admins,
+           source: :event
+
+  has_many :administered_bookings,
+           through: :administered_events,
+           source: :bookings
+
+  has_many :administered_users,
+           through: :administered_bookings,
+           source: :user
 
   validates :email, :members_user_id, presence: true
   validates :members_user_id, uniqueness: true

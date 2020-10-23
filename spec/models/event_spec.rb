@@ -3,8 +3,18 @@ require 'rails_helper'
 RSpec.describe Event, type: :model do
   let(:steve) { FactoryBot.create(:user) }
 
-  it { is_expected.to have_one(:ballot) }
+  it { is_expected.to have_many(:bookings) }
+  it { is_expected.to have_many(:confirmed_bookings) }
+  it { is_expected.to have_many(:provisional_or_confirmed_bookings) }
+  it { is_expected.to have_many(:honoured_bookings) }
+
+  it { is_expected.to have_many(:participants).through(:bookings) }
+  it { is_expected.to have_many(:attendees).through(:honoured_bookings) }
+
   it { is_expected.to have_many(:transitions) }
+  it { is_expected.to have_many(:event_admins) }
+  it { is_expected.to have_many(:entries) }
+  it { is_expected.to have_many(:entrants).through(:entries) }
 
   it { is_expected.to validate_presence_of(:name) }
 

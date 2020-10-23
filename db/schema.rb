@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_07_153804) do
+ActiveRecord::Schema.define(version: 2020_10_15_195142) do
 
   create_table "ballot_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_153804) do
     t.string "to_state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "aasm_event"
     t.index ["ballot_id"], name: "index_ballots_transitions_on_ballot_id"
     t.index ["source_type", "source_id"], name: "index_ballots_transitions_on_source_type_and_source_id"
   end
@@ -60,6 +61,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_153804) do
     t.bigint "honoured_by_id"
     t.bigint "made_by_id"
     t.timestamp "expires_at"
+    t.timestamp "cancellation_cool_off_expires_at"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
   end
@@ -72,6 +74,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_153804) do
     t.bigint "source_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "aasm_event"
     t.index ["booking_id"], name: "index_bookings_transitions_on_booking_id"
     t.index ["source_type", "source_id"], name: "index_bookings_transitions_on_source_type_and_source_id"
   end
@@ -93,6 +96,17 @@ ActiveRecord::Schema.define(version: 2020_10_07_153804) do
     t.index ["user_id"], name: "index_event_admins_on_user_id"
   end
 
+  create_table "event_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "booking_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["booking_id"], name: "index_event_entries_on_booking_id"
+    t.index ["event_id"], name: "index_event_entries_on_event_id"
+    t.index ["user_id"], name: "index_event_entries_on_user_id"
+  end
+
   create_table "events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -105,6 +119,22 @@ ActiveRecord::Schema.define(version: 2020_10_07_153804) do
     t.timestamp "published_at"
   end
 
+  create_table "events_config_data", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "booking_cancellation_cooling_off_period_in_minutes"
+    t.integer "entry_selection_strategy"
+    t.integer "booking_confirmation_period_in_minutes"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "events_configs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "booking_cancellation_cooling_off_period_in_hours"
+    t.integer "entry_selection_strategy"
+    t.integer "booking_confirmation_period_in_hours"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "events_transitions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "source_type", null: false
     t.bigint "source_id", null: false
@@ -113,6 +143,7 @@ ActiveRecord::Schema.define(version: 2020_10_07_153804) do
     t.string "to_state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "aasm_event"
     t.index ["event_id"], name: "index_events_transitions_on_event_id"
     t.index ["source_type", "source_id"], name: "index_events_transitions_on_source_type_and_source_id"
   end
@@ -160,6 +191,8 @@ ActiveRecord::Schema.define(version: 2020_10_07_153804) do
   add_foreign_key "contact_numbers", "users"
   add_foreign_key "event_admins", "events"
   add_foreign_key "event_admins", "users"
+  add_foreign_key "event_entries", "events"
+  add_foreign_key "event_entries", "users"
   add_foreign_key "events_transitions", "events"
   add_foreign_key "waiting_list_entries", "users"
   add_foreign_key "waiting_list_entries", "waiting_lists"

@@ -4,6 +4,10 @@ module Bookings
 
     before_action :find_booking
 
+    def event_config
+      @event_config ||= Events::Config.new(@booking.event.config_data)
+    end
+
     private
 
     def find_booking

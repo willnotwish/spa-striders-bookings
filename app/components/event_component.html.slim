@@ -3,11 +3,14 @@
     = link_to event_name, event
   = bem.element :event_date
   = bem.element :event_time
-  - if booked_by_current_user?
+
+  - if booked?
     = bem.element :booking
-  - elsif bookable_by_current_user?
+  - elsif bookable?
     = bem.element :make_booking_link
-  - elsif entry_ballot?
-    = bem.element :ballot_status
-    - if ballot_open_to_current_user?
-      = bem.element :enter_ballot_link
+  - elsif entered?
+    = bem.element :entry_status
+  - elsif enterable?
+    = bem.element :enter_event_link
+  - else
+    = bem.element :reason_for_unavailability

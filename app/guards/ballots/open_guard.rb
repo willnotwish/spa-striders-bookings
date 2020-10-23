@@ -1,6 +1,6 @@
 module Ballots
   class OpenGuard < ApplicationGuard
-    def success?
+    def pass?
       ballot.opened?
     end
   end

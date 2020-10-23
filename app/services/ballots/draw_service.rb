@@ -6,7 +6,7 @@ module Ballots
                 :bookings_collector
 
     delegate :event, to: :ballot
-    delegate :booked_users, to: :event
+    delegate :participants, to: :event
 
     def initialize(ballot, booking_type: :provisional,
                            confirmation_period: 24.hours, 
@@ -37,7 +37,7 @@ module Ballots
         candidate_entries.delete(drawn_entry)
         
         # Ignore if the drawn user already has a booking
-        next if booked_users.include?(drawn_user)
+        next if participants.include?(drawn_user)
 
         booking_attrs = {
           event: event,

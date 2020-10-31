@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
+# Event related
 module Events
+  # Application wide configuration
   class Config
     attr_reader :source
 
-    def initialize(source = Rails.application.config.bookings_config)
-      @source = source
+    def initialize(source = nil)
+      @source = source || Rails.application.config.bookings_config
     end
 
     def booking_cancellation_cooling_off_period
@@ -20,6 +24,10 @@ module Events
 
     def entry_selection_strategy
       source[:entry_selection_strategy]&.to_sym
+    end
+
+    def allows_direct_entry?
+      entry_selection_strategy != :ballot
     end
 
     private

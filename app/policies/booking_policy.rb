@@ -47,7 +47,7 @@ class BookingPolicy < ApplicationPolicy
     # Owners and/or event admins to here
     return false if event_started?
 
-    # If we're still in the cooling off period alles ist in Ordnung
+    # Allowed if we're in the cooling off period
     cancellation_cool_off_expires_at.tap do |expires_at|
       return true if expires_at.present? && Time.current < expires_at
     end

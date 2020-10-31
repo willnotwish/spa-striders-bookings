@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_15_195142) do
+ActiveRecord::Schema.define(version: 2020_10_27_121407) do
 
   create_table "ballot_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(version: 2020_10_15_195142) do
     t.bigint "made_by_id"
     t.timestamp "expires_at"
     t.timestamp "cancellation_cool_off_expires_at"
+    t.timestamp "confirmation_timer_expires_at"
+    t.timestamp "cancellation_timer_expires_at"
     t.index ["event_id"], name: "index_bookings_on_event_id"
     t.index ["user_id"], name: "index_bookings_on_user_id"
   end
@@ -117,6 +119,8 @@ ActiveRecord::Schema.define(version: 2020_10_15_195142) do
     t.integer "aasm_state"
     t.bigint "published_by"
     t.timestamp "published_at"
+    t.bigint "config_data_id"
+    t.index ["config_data_id"], name: "index_events_on_config_data_id"
   end
 
   create_table "events_config_data", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

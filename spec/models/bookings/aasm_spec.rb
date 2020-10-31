@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 module Bookings
   RSpec.describe 'aasm behaviour', type: :model do  
     subject { FactoryBot.create :booking, user: user, event: event }
-    
+
     let(:booking) { subject }
     let(:event) { FactoryBot.create(:event) }
     let(:user) { FactoryBot.create(:user) }
@@ -16,13 +18,15 @@ module Bookings
     end
     let(:owner) { user }
 
+    it { is_expected.to be_confirmed }
+
     RSpec.shared_examples 'a booking whose confirm! event is successful' do
       it 'returns truthy' do
         expect(booking.confirm!(user: actor)).to be_truthy
       end
 
       it 'updates the state in the booking record' do
-        expect { booking.confirm!(user: actor) }.to change { booking.aasm_state }.to('confirmed')
+        expect { booking.confirm!(user: actor) }.to change(booking, :aasm_state).to('confirmed')
       end
 
       it 'increases the number of confirmed bookings by 1' do
@@ -78,26 +82,26 @@ module Bookings
         expect(booking.may_confirm?(user: nigel)).to eq(false)
       end
     end
-    
+
     RSpec.shared_examples 'it is cancellable' do
       it 'by an admin' do
         admin = FactoryBot.create :user, admin: true
-        expect(booking.may_confirm?(user: admin)).to eq(true)
+        expect(booking.may_cancel?(user: admin)).to eq(true)
       end
 
       it 'by its owner' do
-        expect(booking.may_confirm?(user: booking.user)).to eq(true)
+        expect(booking.may_cancel?(user: booking.user)).to eq(true)
       end
 
       it 'not by some other user who is neither an admin nor an event admin' do
         random_user = FactoryBot.create(:user)
-        expect(booking.may_confirm?(user: random_user)).to eq(false)
+        expect(booking.may_cancel?(user: random_user)).to eq(false)
       end
 
       it 'by an event admin' do
         doug = FactoryBot.create(:user)
         FactoryBot.create :event_admin, user: doug, event: event
-        expect(booking.may_confirm?(user: doug)).to eq(true)
+        expect(booking.may_cancel?(user: doug)).to eq(true)
       end
     end
 
@@ -127,11 +131,8 @@ module Bookings
       let(:booking) do
         FactoryBot.create(:booking, user: user,
                                     event: event,
-                                    aasm_state: :provisional)
-      end
-
-      before do
-        expect(booking.expires_at).to be_blank
+                                    aasm_state: :provisional,
+                                    confirmation_timer_expires_at: nil)
       end
 
       it_behaves_like 'it is confirmable'
@@ -158,16 +159,12 @@ module Bookings
       it_behaves_like 'is cancelled by a cancel event'
     end
 
-    describe 'when provisional, with an expiry timestamp 1 minute ago' do
+    describe 'when provisional, when its confirmation timer expired one minute ago' do
       let(:booking) do
-        FactoryBot.create(:booking, user: user, 
+        FactoryBot.create(:booking, user: user,
                                     event: event,
                                     aasm_state: :provisional,
-                                    expires_at: 1.minute.ago)
-      end
-
-      before do
-        expect(booking.expires_at).to be_present
+                                    confirmation_timer_expires_at: 1.minute.ago)
       end
 
       it 'is not confirmable by its owner' do

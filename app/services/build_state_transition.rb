@@ -1,5 +1,6 @@
-class StateTransitionBuilderService < ApplicationService
+class BuildStateTransition < ApplicationService
   attr_reader :user
+
   delegate :aasm, to: :model
 
   def initialize(model, user: nil, **)

@@ -60,13 +60,6 @@ class Event < ApplicationRecord
   # An event may have a config. Configs are often shared between events
   belongs_to :config_data, class_name: 'Events::ConfigData', optional: true
 
-  enum aasm_state: {
-    draft: 10,
-    published: 20,
-    restricted: 30,
-    locked: 40
-  }
-
   include AASM
   aasm enum: true do
     state :draft, initial: true # no self-service bookings allowed; for setting up only
@@ -87,8 +80,15 @@ class Event < ApplicationRecord
       transitions from: %i[draft published restricted], to: :locked
     end
 
-    after_all_transitions StateTransitionBuilderService
+    after_all_transitions BuildStateTransition
   end
+
+  enum aasm_state: {
+    draft: 10,
+    published: 20,
+    restricted: 30,
+    locked: 40
+  }
 
   validates :name, presence: true
 
